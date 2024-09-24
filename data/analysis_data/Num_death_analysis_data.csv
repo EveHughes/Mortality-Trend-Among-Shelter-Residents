@@ -1,4 +1,4 @@
-_id,Year,Month,Total decedents,Male,Female,Transgender/Non-binary/Two-Spirit
+id,year,month,total_decedents,male,female,transgender_nonbinary_twospirit
 1,2007,Jan,0,0,0,0
 2,2007,Feb,3,3,0,0
 3,2007,Mar,3,2,1,0
