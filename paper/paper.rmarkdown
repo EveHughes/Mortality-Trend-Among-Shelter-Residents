@@ -6,7 +6,7 @@ author:
 thanks: "Code and data are available at: https://open.toronto.ca/dataset/deaths-of-shelter-residents/"
 date: Septmeber 23 2024
 date-format: long
-abstract: "Poverty and homelessness remain pressing issues in today’s society, particularly evident in downtown Toronto, where many individuals still sleep on the streets or in subway stations. Due to these harsh living conditions, these individuals often face severe health issues, leading to an increased risk of mortality. Luckly, there are services in the city that provide place for some of these people to live. This paper analyzes the trends in mortality rates among shelter residents in the City of Toronto from 2007 to 2024, highlighting patterns over time and exploring the factors contributing to these rates."
+abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
 format: pdf
 number-sections: true
 bibliography: references.bib
@@ -29,19 +29,8 @@ AvgAge_data <- read_csv(here::here("data/analysis_data/AvgAge_death_analysis_dat
 ```
 
 
+
 # Introduction
-
-Homelessness is a well-known issue worldwide, particularly in impoverished cities and countries. It was reported approximately 15 million homeless individuals globally by the 'World Economic Forum in 2021' [ need to cite - https://www.homelessworldcup.org/homelessness-statistics#:~:text=As%20many%20as%201.6%20billion,global%20homelessness%20is%20extremely%20challenging.]. Although homelessness is more severe in developing countries, it does not mean that developed places are free from this problem.
-
-In downtown Toronto, a city that hosts numerous corporate headquarters and some of the Canada's top educational institutions, homelessness remains a significant issue. Homeless individuals can be seen on the streets and even in subway stations, showing the persistent challenges faced by the city and those without stable housing.
-
-
-
-Homeless individuals often live and sleep in harsh and unsanitary conditions, which severely compromises their health. They are more likely to get diseases and suffer from various health problems due to limited access to proper healthcare and nutrition. Consequently, this significantly increases their risk of mortality.
-
-
-whcih in this paper we will look at the data _________, which pro
-
 
 You can and should cross-reference sections and sub-sections. We use @citeR and @rohan.
 
@@ -52,6 +41,7 @@ The remainder of this paper is structured as follows. @sec-data....
 # Data {#sec-data}
 
 Some of our data is of penguins (@fig-Total Number of Death By Year ), from @palmerpenguins.
+
 
 ```{r}
 #| label: fig-Total Number of Death By Year 
@@ -67,11 +57,14 @@ AvgAge_data |>
   scale_x_continuous(breaks = unique(AvgAge_data$year)) +
   scale_y_continuous(breaks = seq(0, max(AvgAge_data$total_decedents), by = 5))
 
+ 
 ```
+
 
 Talk more about it.
 
 And also planes (@fig-planes). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work well once you have enough text.)
+
 
 ```{r}
 #| label: fig-planes
@@ -83,6 +76,7 @@ And also planes (@fig-planes). (You can change the height and width, but don't w
 
 ```
 
+
 Talk way more about it. 
 
 
@@ -92,6 +86,7 @@ Talk way more about it.
 # Results
 
 Our results are summarized in @tbl-modelresults.
+
 
 ```{r}
 #| echo: false
@@ -104,6 +99,7 @@ library(rstanarm)
 first_model <-
   readRDS(file = here::here("models/first_model.rds"))
 ```
+
 
 
 
@@ -139,6 +135,7 @@ In @fig-ppcheckandposteriorvsprior-1 we implement a posterior predictive check. 
 
 In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows... 
 
+
 ```{r}
 #| eval: true
 #| echo: false
@@ -160,11 +157,13 @@ posterior_vs_prior(first_model) +
   coord_flip()
 ```
 
+
 ## Diagnostics
 
 @fig-stanareyouokay-1 is a trace plot. It shows... This suggests...
 
 @fig-stanareyouokay-2 is a Rhat plot. It shows... This suggests...
+
 
 ```{r}
 #| echo: false
@@ -183,9 +182,11 @@ plot(first_model, "rhat")
 
 
 
+
 \newpage
 
 
 # References
+
 
 
