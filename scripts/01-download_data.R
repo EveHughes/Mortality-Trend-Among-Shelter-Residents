@@ -16,14 +16,28 @@ library(dplyr)
 
 #### Download data ####
 
-package <- show_package("91cf5765-3d3f-4d55-9eea-acb1d4222928")
+# get package
+package <- show_package("deaths-of-shelter-residents")
 package
 
+# get all resources for this package
+resources <- list_package_resources("deaths-of-shelter-residents")
+
+# identify datastore resources; by default, Toronto Open Data sets datastore resource format to CSV for non-geospatial and GeoJSON for geospatial resources
+datastore_resources <- filter(resources, tolower(format) %in% c('csv', 'geojson'))
+
+# load the Deaths of Shelter Residents data
+Num_death_data <- filter(datastore_resources, row_number()==1) %>% get_resource()
+
+
+# Deaths of Shelter Residents Mean Age
+Avg_death_age_data <- filter(datastore_resources, row_number()==2) %>% get_resource()
 
 
 #### Save data ####
 # [...UPDATE THIS...]
 # change the_raw_data to whatever name you assigned when you downloaded it.
-write_csv(the_raw_data, "inputs/data/raw_data.csv") 
+write_csv(Num_death_data, "data/raw_data/Num_death_raw_data.csv") 
+write_csv(Avg_death_age_data, "data/raw_data/raw_age_data.csv") 
 
          
