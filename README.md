@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repo provides students with a foundation for their own projects associated with *Telling Stories with Data*. You do not need every aspect for every paper and you should delete aspects that you do not need.
+This paper utilized data obtained from Open Data Toronto, specifically the "Deaths of Shelter Residents" dataset. The analysis focuses on trends in mortality rates among shelter residents in the City of Toronto from 2007 to 2024, highlighting patterns over time and exploring the factors contributing to these rates.
 
 
 ## File Structure
