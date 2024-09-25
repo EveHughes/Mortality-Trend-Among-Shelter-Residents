@@ -9,7 +9,8 @@ date-format: long
 abstract: "Poverty and homelessness remain pressing issues in today’s society, particularly evident in downtown Toronto, where many individuals still sleep on the streets or in subway stations. Due to these harsh living conditions, these individuals often face severe health issues, leading to an increased risk of mortality. Luckly, there are services in the city that provide place for some of these people to live. This paper analyzes the trends in mortality rates among shelter residents in the City of Toronto from 2007 to 2024, highlighting patterns over time and exploring the factors contributing to these rates."
 format: pdf
 number-sections: true
-bibliography: references.bib
+bibliography: references.bib 
+
 ---
 
 ```{r}
@@ -18,7 +19,6 @@ bibliography: references.bib
 #| message: false
 
 library(tidyverse)
-library(palmerpenguins)
 library(ggplot2)
 library(dplyr)
 
@@ -31,81 +31,201 @@ AvgAge_data <- read_csv(here::here("data/analysis_data/AvgAge_death_analysis_dat
 
 # Introduction
 
-Homelessness is a well-known issue worldwide, particularly in impoverished cities and countries. It was reported approximately 15 million homeless individuals globally by the 'World Economic Forum in 2021' [ need to cite - https://www.homelessworldcup.org/homelessness-statistics#:~:text=As%20many%20as%201.6%20billion,global%20homelessness%20is%20extremely%20challenging.]. Although homelessness is more severe in developing countries, it does not mean that developed places are free from this problem.
-
-In downtown Toronto, a city that hosts numerous corporate headquarters and some of the Canada's top educational institutions, homelessness remains a significant issue. Homeless individuals can be seen on the streets and even in subway stations, showing the persistent challenges faced by the city and those without stable housing.
+Homelessness is a well-known issue worldwide, particularly in impoverished cities and countries. It was reported approximately 15 million homeless individuals globally by the World Economic Forum in 2021 (@homelessfact). Although homelessness is more severe in developing countries, it does not mean that developed places are free from this problem. In downtown Toronto, a city that hosts numerous corporate headquarters and some of the Canada's top educational institutions, homelessness remains a significant issue. Homeless individuals can be seen on the streets and even in subway stations, showing the persistent challenges faced by the city and those without stable housing.
 
 
+Homeless individuals often live and sleep in harsh and unsanitary conditions, which severely compromises their health. They are more likely to get diseases and suffer from various health problems due to limited access to proper healthcare and nutrition. Consequently, this significantly increases their risk of mortality. The City of Toronto is also deeply concerned about this issue and has implemented numerous aid programs and support services to assist homeless individuals. Despite these efforts, many homeless individuals continue to face significant challenges, and there are still a considerable number of deaths occurring at relatively young ages
 
-Homeless individuals often live and sleep in harsh and unsanitary conditions, which severely compromises their health. They are more likely to get diseases and suffer from various health problems due to limited access to proper healthcare and nutrition. Consequently, this significantly increases their risk of mortality.
+In this paper we will look at the data @toronto_deaths_shelter_residents, which explore the trends in mortality rates among shelter residents in the City of Toronto from 2007 to 2024, highlighting patterns over time and exploring the factors contributing to these rates.The data indicates that mortality rates were relatively low, with fewer than five deaths per month in the prior 2019. However, after 2019, there was a sharp increase in the number of deaths, peaking in 2021 and 2022. This surge can be attributed to the onset of the COVID-19 pandemic in 2019, which significantly impacted public health and resulted in many fatalities.
 
+Additionally, the challenging living conditions faced by homeless individuals, compared to those of wealthier individuals who also experienced hardships during this time, suggest that the mortality rates among shelter residents are likely to remain elevated. COVID-19 was also a primary driver behind the large number of deaths, as evidenced by the immediate decrease in the number of deaths following the post-pandemic period shown in the graphs. The data was examined more in depth by analyzing the mortality rate and average mortality rate between male and female homeless individuals in shelter residences. There are a lot more male death compare to female death, but this make sense as the proportion of male residents is greater than that of female residents, with 60% male and only 40% female (@toronto_shelter_flow_data). Additionally, the average age of deceased individuals is around 50 to 60 years old (@datacommons_life_expectancy). According to data, the life expectancy in Canada is approximately 81 years, indicating that the average age at death for homeless individuals is quite young. 
 
-whcih in this paper we will look at the data _________, which pro
-
-
-You can and should cross-reference sections and sub-sections. We use @citeR and @rohan.
-
-The remainder of this paper is structured as follows. @sec-data....
-
+The remainder of this paper is structured as follows. Section 2 will discuss the data used in the study, highlighting key aspects and limitations. Section 3 will focus on generating graphs using the data presented in Section 2. Section 4 will elaborate on the graphs from Section 3, providing interpretations and possible explanations for the findings. 
 
 
 # Data {#sec-data}
 
-Some of our data is of penguins (@fig-Total Number of Death By Year ), from @palmerpenguins.
+## Raw Data {#sec-first-point}
+
+The data used in this paper is access in from Open Data Toronto and the particular data set used was the Deaths of Shelter Residents (@toronto_deaths_shelter_residents). To analysis the data and creating graphs using the data, following package that was build in the R program @citeR was used: tidyverse (@tidyverse), dplyr (@dplyr), knitr (@knitr), and ggplot2 ()@ggplot2. 
+
+The data used in this paper was collected by the Toronto Shelter and Support Services Division since 2007. Shelters are required to notify the City of Toronto within 24 hours of a death and submit a written report within 30 days. Consequently, the data is updated monthly on the Open Data Toronto website. The raw data set includes 10 variables and 18 observations, covering the period from 2007 to 2024, as shown in Table 1 (@Tab-Table1). The key variables used in this paper include: year, total decedents, average age at death for all decedents, male decedents, average age at death for male decedents, female decedents, and average age at death for female decedents. Additionally, the monthly death counts from 2007 to 2024 will be used for graphing, comprising 212 observations.
+
+
 
 ```{r}
-#| label: fig-Total Number of Death By Year 
+#| label: Tab-Table1
+#| fig-cap: Yearly Mortality rate from 2007-2024
+#| echo: false
+
+library(knitr)
+library(dplyr)
+
+# Remove the 'id' column
+AvgAge_data_no_id <- AvgAge_data %>%
+  select(-id)
+
+# Display the table without the 'id' column
+kable(AvgAge_data_no_id, 
+      caption = "Trends in Mortality Rates Among Shelter Residents (2007-2024)",
+      col.names = c("Year", "Total Decedents", 
+                    "Avg Age of Death (All)", "Male Decedents", 
+                    "Avg Age of Death (Male)", "Female Decedents", 
+                    "Avg Age of Death (Female)", "Trans/NB/2S Decedents", 
+                    "Avg Age of Death (Trans/NB/2S)"))
+```
+
+
+
+## Limitation of Data {#sec-first-point}
+
+The Deaths of Shelter Residents data is part of a larger database shared by Toronto Public Health (TPH), which also includes deaths of homeless individuals living in shelters and outdoors. Therefore, the findings in this paper focus solely on homeless individuals residing in shelters, which may limit the dataset and lead to potential biases that do not fully represent the mortality of all homeless individuals.
+
+Other limitations include the absence of certain data points, such as the cause of death and additional information that could identify the deceased, due to confidentiality concerns. This lack of information may impact the reasoning behind the findings, as possible explanations will need to be drawn from other research and sources.
+
+
+# Results
+
+@fig-TotalNumberofDeathByYear is showing the total amount of decedent of homeless living in the Shelter. 
+
+```{r}
+#| label: fig-TotalNumberofDeathByYear 
 #| fig-cap: Yearly Mortality rate from 2007-2024
 #| echo: false
 
 AvgAge_data |> 
   ggplot(aes(x = year, y = total_decedents)) +
   geom_point() +
+  geom_line() +
   labs(title = "Total Decedents by Year", x = "Year", y = "Total Decedents") +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5)) + 
   scale_x_continuous(breaks = unique(AvgAge_data$year)) +
-  scale_y_continuous(breaks = seq(0, max(AvgAge_data$total_decedents), by = 5))
+  scale_y_continuous(breaks = seq(0, max(AvgAge_data$total_decedents), by = 20))
 
 ```
 
-Talk more about it.
-
-And also planes (@fig-planes). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work well once you have enough text.)
-
+@fig-TotalDecedentsbyMonth shows the number of deaths in each month-year pair from 2007 to 2024. 
 ```{r}
-#| label: fig-planes
-#| fig-cap: Relationship between wing length and width
+#| label: fig-TotalDecedentsbyMonth
+#| fig-cap: Yearly Mortality rate from 2007-2024
 #| echo: false
-#| warning: false
-#| message: false
 
+# Combine Year and Month into a single column with last two digits of the year
+Death_data$YearMonth <- paste(substr(Death_data$year, 3, 4), Death_data$month, sep = "-")
 
+# Convert YearMonth to a factor with ordered levels
+Death_data$YearMonth <- factor(Death_data$YearMonth, levels = unique(Death_data$YearMonth))
+
+# Plot the graph
+Death_data |>
+  ggplot(aes(x = YearMonth, y = total_decedents, group=1)) +
+  geom_line(color="blue") +
+  geom_point(color="red") +
+  scale_x_discrete(breaks = Death_data$YearMonth[seq(1, nrow(Death_data), by = 12)]) + # Show only every 12th month (i.e., January each year)
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, size = 8)) + # Display x-axis labels vertically
+  labs(title="Trends in Total Decedents by Month and Year", 
+       x="Month-Year", 
+       y="Total Decedents") +
+  theme_minimal()
 ```
 
 Talk way more about it. 
 
-
-
-
-
-# Results
-
-Our results are summarized in @tbl-modelresults.
-
+@fig-TotalDecedentbyMonthcovid is a close up look from @fig-TotalDecedentsbyMonth focusing on data ranging from year 2019 to 2022, during the pandemic. 
 ```{r}
+#| label: fig-TotalDecedentbyMonthcovid
+#| fig-cap: Yearly Mortality rate from 2019-2022
 #| echo: false
-#| eval: true
+
+# Filter the data for years 2019 to 2022
+Death_data_filtered <- Death_data %>%
+  filter(year >= 2019 & year <= 2022)
+
+# Combine Year and Month into a single column with last two digits of the year
+Death_data_filtered$YearMonth <- paste(substr(Death_data_filtered$year, 3, 4), Death_data_filtered$month, sep = "-")
+
+# Convert YearMonth to a factor with ordered levels
+Death_data_filtered$YearMonth <- factor(Death_data_filtered$YearMonth, levels = unique(Death_data_filtered$YearMonth))
+
+# Plot the graph for filtered data
+Death_data_filtered |>
+  ggplot(aes(x = YearMonth, y = total_decedents, group = 1)) +
+  geom_line(color = "blue") +
+  geom_point(color = "red") +
+  scale_x_discrete(breaks = Death_data_filtered$YearMonth[seq(1, nrow(Death_data_filtered), by = 6)]) + # Show every 6th month
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, size = 8)) + # Display x-axis labels vertically
+  labs(title = "Trends in Total Decedents by Month and Year (2019-2022)",
+       x = "Month-Year",
+       y = "Total Decedents") +
+  theme_minimal()
+```
+
+@ fig-TotalDecedentsFemaleVsMale display a comparison in number of death between females and males.
+```{r}
+#| label: fig-TotalDecedentsFemaleVsMale 
+#| fig-cap: Total Decedents Female VS Male
+#| echo: false
+#| include: false
 #| warning: false
 #| message: false
 
-library(rstanarm)
+library(ggplot2)
+library(tidyr)
+library(dplyr)
 
-first_model <-
-  readRDS(file = here::here("models/first_model.rds"))
+# Reshape the data for plotting
+plot_data <- AvgAge_data %>%
+  select(year, Male_decedents, Female_decedents) %>%
+  pivot_longer(cols = c(Male_decedents, Female_decedents),
+               names_to = "Gender",
+               values_to = "Mortality")
+
+# Create a new variable for the last two digits of the year with leading zero
+plot_data <- plot_data %>%
+  mutate(year_short = sprintf("%02d", year %% 100))
+
+# Create the bar graph with adjusted year labels
+ggplot(plot_data, aes(x = year_short, y = Mortality, fill = Gender)) +
+  geom_bar(stat = "identity", position = position_dodge(width = 0.8), width = 0.7) +
+  labs(title = "Mortality Numbers of Male and Female Decedents",
+       x = "Year (2000s)",
+       y = "Number of Decedents") +
+  scale_fill_manual(values = c("Male_decedents" = "blue", "Female_decedents" = "pink")) +
+  theme_minimal()
+
 ```
 
+@fig-AvgAgeofDecedentsFemaleVSMale presents a comparison of the average age at death between females and males.
+```{r}
+#| label: fig-AvgAgeofDecedentsFemaleVSMale 
+#| fig-cap: Total Decedents Female VS Male
+#| echo: false
+#| warning: false
+#| message: false
 
+# Reshape the data for plotting average age of death
+avg_age_data <- AvgAge_data %>%
+  select(year, Average_age_of_death_male_decedents, Average_age_of_death_female_decedents) %>%
+  pivot_longer(cols = c(Average_age_of_death_male_decedents, Average_age_of_death_female_decedents),
+               names_to = "Gender",
+               values_to = "Average_Age") %>%
+  mutate(year_short = sprintf("%02d", year %% 100)) 
+
+# Create the line graph for average age of death
+ggplot(avg_age_data, aes(x = year_short, y = Average_Age, color = Gender, group = Gender)) +
+  geom_line(size = 1) +   
+  geom_point(size = 2) +    
+  labs(title = "Average Age of Death for Male and Female Decedents",
+       x = "Year",
+       y = "Average Age of Death") +
+  scale_color_manual(values = c("Average_age_of_death_male_decedents" = "blue", 
+                                 "Average_age_of_death_female_decedents" = "pink")) +
+  theme_minimal() +
+  theme(legend.title = element_blank(),
+        legend.position = "bottom") 
+
+```
 
 
 # Discussion
@@ -139,48 +259,13 @@ In @fig-ppcheckandposteriorvsprior-1 we implement a posterior predictive check. 
 
 In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows... 
 
-```{r}
-#| eval: true
-#| echo: false
-#| message: false
-#| warning: false
-#| label: fig-ppcheckandposteriorvsprior
-#| layout-ncol: 2
-#| fig-cap: "Examining how the model fits, and is affected by, the data"
-#| fig-subcap: ["Posterior prediction check", "Comparing the posterior with the prior"]
 
-pp_check(first_model) +
-  theme_classic() +
-  theme(legend.position = "bottom")
-
-posterior_vs_prior(first_model) +
-  theme_minimal() +
-  scale_color_brewer(palette = "Set1") +
-  theme(legend.position = "bottom") +
-  coord_flip()
-```
 
 ## Diagnostics
 
 @fig-stanareyouokay-1 is a trace plot. It shows... This suggests...
 
 @fig-stanareyouokay-2 is a Rhat plot. It shows... This suggests...
-
-```{r}
-#| echo: false
-#| eval: true
-#| message: false
-#| warning: false
-#| label: fig-stanareyouokay
-#| fig-cap: "Checking the convergence of the MCMC algorithm"
-#| fig-subcap: ["Trace plot", "Rhat plot"]
-#| layout-ncol: 2
-
-plot(first_model, "trace")
-
-plot(first_model, "rhat")
-```
-
 
 
 \newpage
