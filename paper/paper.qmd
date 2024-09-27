@@ -3,7 +3,7 @@ title: "Mortality Trend Among Shelter Residents: "
 subtitle: "Closely Tied To Virus Outbreaks"
 author: 
   - Mandy He
-thanks: "Code and data are available at: https://open.toronto.ca/dataset/deaths-of-shelter-residents/"
+thanks: "Code and data are available at: https://github.com/MandyHe7/Mortality-Trend-Among-Shelter-Residents"
 date: Septmeber 27 2024
 date-format: long
 abstract: "Homelessness remain pressing issues in today’s society, particularly evident in Toronto, these individuals face severe health issues, leading to increased risk of mortality. This paper analyzes trends in mortality rates among shelter residents in the City of Toronto (2007 to 2024), highlighting patterns over time and exploring the factors contributing to these rates. This paper found trend in mortality rate of this minority group reflects the overall macro-environment health conditions. Thus, examining these patterns can help improve provisions and reduce the number of deaths among both this vulnerable population and society at large."
