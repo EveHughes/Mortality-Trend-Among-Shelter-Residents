@@ -1,12 +1,12 @@
 ---
-title: "Trends in Mortality Rates"
-subtitle: "Analyzing Deaths Among Shelter Residents from 2007 to 2024"
+title: "Trends in Mortality Among Shelter Residents: : Closely Tied To Virus Outbreaks"
+subtitle: "Analyzing period: 2007 to 2024"
 author: 
   - Mandy He
 thanks: "Code and data are available at: https://open.toronto.ca/dataset/deaths-of-shelter-residents/"
-date: Septmeber 23 2024
+date: Septmeber 27 2024
 date-format: long
-abstract: "Poverty and homelessness remain pressing issues in today’s society, particularly evident in downtown Toronto, where many individuals still sleep on the streets or in subway stations. Due to these harsh living conditions, these individuals often face severe health issues, leading to an increased risk of mortality. Luckily, there are services in the city that provide place for some of these people to live. This paper analyzes the trends in mortality rates among shelter residents in the City of Toronto from 2007 to 2024, highlighting patterns over time and exploring the factors contributing to these rates."
+abstract: "Homelessness remain pressing issues in today’s society, particularly evident in downtown Toronto, due to  harsh living conditions, these individuals often face severe health issues, leading to an increased risk of mortality. This paper analyzes the trends in mortality rates among shelter residents in the City of Toronto from 2007 to 2024, highlighting patterns over time and exploring the factors contributing to these rates. This paper found that the trend in the mortality rate of this minority group reflects the overall health conditions in the macro-environment. Therefore, examining these patterns can help improve provisions and reduce the number of deaths among both this vulnerable population and society at large."
 format: pdf
 number-sections: true
 bibliography: references.bib 
@@ -19,6 +19,7 @@ toc: true
 #| warning: false
 #| message: false
 
+#load necessary package 
 library(tidyverse)
 library(ggplot2)
 library(dplyr)
@@ -26,6 +27,7 @@ library(knitr)
 library(tidyr)
 library(gridExtra)
 
+# load data
 Death_data <- read_csv(here::here("data/analysis_data/Num_death_analysis_data.csv"))
 AvgAge_data <- read_csv(here::here("data/analysis_data/AvgAge_death_analysis_data.csv"))
 
@@ -42,7 +44,8 @@ Homeless individuals often live and sleep in harsh and unsanitary conditions, wh
 
 In this paper we will look at the data @toronto_deaths_shelter_residents, which explore the trends in mortality rates among shelter residents in the City of Toronto from 2007 to 2024, highlighting patterns over time and exploring the factors contributing to these rates.The data indicates that mortality rates were relatively low, with fewer than five deaths per month in the prior 2019. However, after 2019, there was a sharp increase in the number of deaths, peaking in 2021 and 2022. This surge can be attributed to the onset of the COVID-19 pandemic in 2019, which significantly impacted public health and resulted in many fatalities.
 
-The data was examined more in depth by analyzing the mortality rate and average mortality rate between male and female homeless individuals in shelter residences. There are a lot more male death compare to female death every single year. Additionally, the average age at death is around 50 to 60 years old, which is relatively young compared to Canada’s life expectancy. Future details about the findings will be discussed in the discussion section.
+The data was examined more in depth by analyzing the mortality rate and average mortality rate between male and female homeless individuals in shelter residences. There are a lot more male death compare to female death every single year. Additionally, the average age at death is around 50 to 60 years old, which is relatively young compared to Canada’s life expectancy. These trends are crucial for helping the city improve services provided to this population. Furthermore, from a social and economic perspective, supporting minority populations is essential for community and economic growth. If individuals in these communities are healthier and live longer, they can contribute more effectively to society.
+
 
 The remainder of this paper is structured as follows. @sec-data will discuss the data used in the study, highlighting key aspects and limitations. @sec-Results will focus on generating graphs using the data presented in @sec-data. @sec-discussion will elaborate on the graphs from @sec-Results, providing interpretations and possible explanations for the findings. 
 
@@ -53,7 +56,7 @@ The remainder of this paper is structured as follows. @sec-data will discuss the
 
 The data used in this paper is access in from Open Data Toronto and the particular data set used was the Deaths of Shelter Residents (@toronto_deaths_shelter_residents). To analysis the data and creating graphs using the data, following package that was build in the (R program @citeR) was used: tidyverse (@tidyverse), dplyr (@dplyr), tidyr (@tidyr), gridExtra (@gridExtra), knitr (@knitr), and ggplot2 (@ggplot2). LLM (@openai2023chatgpt) was also use for this paper in term of helping with coding in R to graph data, simulating a data, cleaning data, and revising writing. 
 
-The data used in this paper was collected by the Toronto Shelter and Support Services Division since 2007. Shelters are required to notify the City of Toronto within 24 hours of a death and submit a written report within 30 days. Consequently, the data is updated monthly on the Open Data Toronto website. The raw data set includes 10 variables and 18 observations, covering the period from 2007 to 2024, as shown in @tbl-Table1. The key variables used in this paper include: year, total decedents, average age at death for all decedents, male decedents, average age at death for male decedents, female decedents, and average age at death for female decedents. Additionally, the monthly death counts from 2007 to 2024 will be used for graphing, comprising 212 observations.
+The data used in this paper was collected by the Toronto Shelter and Support Services Division since 2007. Shelters are required to notify the City of Toronto within 24 hours of a death and submit a written report within 30 days. Accordingly, the data is updated monthly on the Open Data Toronto website. The raw data set includes 10 variables and 18 observations, covering the period from 2007 to 2024, as shown in @tbl-Table1. The key variables used in this paper include: year, total decedents, average age at death for all decedents, male decedents, average age at death for male decedents, female decedents, and average age at death for female decedents. Additionally, the monthly death counts from 2007 to 2024 will be used for graphing, comprising 212 observations.
 
 
 
@@ -76,7 +79,7 @@ The data used in this paper was collected by the Toronto Shelter and Support Ser
 \newpage
 ```{r}
 #| label: tbl-Table1
-#| tbl-cap: Trends in Mortality Rates Among Shelter Residents (2007-2024)
+#| tbl-cap: Variable In The Data - Detah Among Shelter Residents (2007-2024)
 #| echo: false
 
 # Remove the 'id' column
@@ -110,6 +113,7 @@ The following graph (@fig-TotalNumberofDeathByYear) shows the overall trend in t
 #| fig-cap: Yearly Mortality rate from 2007-2024
 #| echo: false
 
+# creating a line graph 
 AvgAge_data |> 
   ggplot(aes(x = year, y = total_decedents)) +
   geom_point() +
@@ -127,11 +131,11 @@ AvgAge_data |>
 @fig-TotalDecedentbyMonthcovid provides a close-up view of the years 2019 to 2024, covering the period of the COVID-19 pandemic and a bit of the post-pandemic phase. During this time, the number of deaths does not exhibit a clear trend as time progresses. However, in many months during these years, the number of deaths remains notably high, often fluctuating between 10 and 15 deaths per month. Detailed discussion found in @sec-second-dpoint.
 ```{r}
 #| label: fig-TotalDecedentbyMonthcovid
-#| fig-cap: Yearly Mortality rate from 2019-2023
+#| fig-cap: Yearly Mortality rate during COVID (2019-2023)
 #| echo: false
 
 # Filter the data for years 2019 to 2022
-Death_data_filtered <- Death_data %>%
+Death_data_filtered <- Death_data |> 
   filter(year >= 2019 & year <= 2023)
 
 # Combine Year and Month into a single column with last two digits of the year
@@ -145,12 +149,12 @@ Death_data_filtered |>
   ggplot(aes(x = YearMonth, y = total_decedents, group = 1)) +
   geom_line(color = "black") +
   geom_point(color = "black") +
-  scale_x_discrete(breaks = Death_data_filtered$YearMonth[seq(1, nrow(Death_data_filtered), by = 6)]) + # Show every 6th month
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, size = 8)) + # Display x-axis labels vertically
+  scale_x_discrete(breaks = Death_data_filtered$YearMonth[seq(1, nrow(Death_data_filtered), by = 6)]) + 
   labs(title = "Trends in Total Decedents by Month(2019-2023)",
        x = "Month-Year",
        y = "Total Decedents") +
   theme_minimal()+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, size = 8)) + 
   theme(plot.title = element_text(hjust = 0.5))
 
 ```
@@ -158,24 +162,25 @@ Death_data_filtered |>
 @fig-T illustrates the number of deaths among genders. The bar graph clearly shows that the number of male decedents is significantly greater than that of female decedents, a trend consistent across all the years presented. Additionally, the graph indicates that the mortality rate among males is more volatile over the years, particularly from 2019 to 2022. These results may be attributed to the proportion of males living in shelters; further details can be found in @sec-3-dpoint.
 ```{r}
 #| label: fig-T 
-#| fig-cap: Total Decedents Female VS Male
+#| fig-cap: Total Decedents Split by Gender (Female VS Male)
 #| echo: false
 #| warning: false
 #| message: false
 
 # Reshape the data for plotting
-plot_data <- AvgAge_data %>%
-  select(year, Male_decedents, Female_decedents) %>%
+plot_data <- AvgAge_data |>
+  select(year, Male_decedents, Female_decedents)|>
   pivot_longer(cols = c(Male_decedents, Female_decedents),
                names_to = "Gender",
                values_to = "Mortality")
 
 # Create a new variable for the last two digits of the year with leading zero
-plot_data <- plot_data %>%
+plot_data <- plot_data |>
   mutate(year_short = sprintf("%02d", year %% 100))
 
 # Create the bar graph with adjusted year labels
-ggplot(plot_data, aes(x = year_short, y = Mortality, fill = Gender)) +
+plot_data |>
+  ggplot(aes(x = year_short, y = Mortality, fill = Gender)) +
   geom_bar(stat = "identity", position = position_dodge(width = 0.8), width = 0.7) +
   labs(title = "Mortality Numbers of Male Vs Female Decedents over 2007 to 2024",
        x = "Year (2000s)",
@@ -191,21 +196,22 @@ ggplot(plot_data, aes(x = year_short, y = Mortality, fill = Gender)) +
 
 ```{r}
 #| label: fig-AvgAgeofDecedentsFemaleVSMale 
-#| fig-cap: Total Decedents Female VS Male
+#| fig-cap: Average Age of Death (Female VS Male)
 #| echo: false
 #| warning: false
 #| message: false
 
 # Reshape the data for plotting average age of death
-avg_age_data <- AvgAge_data %>%
+avg_age_data <- AvgAge_data |>
   select(year, Average_age_of_death_male_decedents, Average_age_of_death_female_decedents) %>%
   pivot_longer(cols = c(Average_age_of_death_male_decedents, Average_age_of_death_female_decedents),
                names_to = "Gender",
-               values_to = "Average_Age") %>%
+               values_to = "Average_Age") |>
   mutate(year_short = sprintf("%02d", year %% 100)) 
 
 # Create the line graph for average age of death
-ggplot(avg_age_data, aes(x = year_short, y = Average_Age, color = Gender, group = Gender)) +
+avg_age_data |>
+  ggplot(aes(x = year_short, y = Average_Age, color = Gender, group = Gender)) +
   geom_line(size = 1) +   
   geom_point(size = 2) +    
   labs(title = "Average Age of Death for Male Vs Female Decedents",
@@ -247,7 +253,7 @@ From @fig-T, it is evident that the mortality rate for males is significantly hi
 
 ## Weaknesses and next steps
 
-The findings in this paper represent a small aspect of what is happening in the world, focusing specifically on the homeless population. While these results cannot be used to draw definitive conclusions about broader trends, they do provide insights into patterns that may be occurring on a larger scale.
+The findings in this paper represent a small aspect of what is happening in the world, focusing specifically on the homeless population. While these results cannot be used to draw definitive conclusions about broader trends, they do provide awareness into patterns that may be occurring on a larger scale.
 
 The connections discussed in this section are not statistically proven, as no models were run to demonstrate the correlation between the deaths of homeless individuals residing in shelters and the various possible explanations mentioned. In addition, the actual causes of death may remain unknown due to confidentiality restrictions and are inferred based on global events that could have contributed to these fatalities.
 
@@ -268,7 +274,7 @@ For instance, to establish a connection between the increase in death numbers in
 #| warning: false
 #| message: false
 
-
+# make sure that the month is in order from Jan to Dec.
 Death_data$month <- factor(Death_data$month, levels = month.abb)
 
 # Filter data for the years 2007 and 2008
@@ -330,7 +336,7 @@ grid.arrange(plot_2007, plot_2008, plot_2009, plot_2010, ncol = 2)
 #| warning: false
 #| message: false
 
-
+# make sure that the month is in order from Jan to Dec.
 Death_data$month <- factor(Death_data$month, levels = month.abb)
 
 # Filter data for the years 
@@ -340,7 +346,7 @@ current_year_data_2013 <- Death_data %>% filter(year == 2013)
 current_year_data_2014 <- Death_data %>% filter(year == 2014)
 
 
-
+# Create the bar plots
 plot_2011 <- ggplot(current_year_data_2011, aes(x = month, y = total_decedents)) +
   geom_bar(stat = "identity", fill = "black") +
   labs(title = "Total Decedents by Month in 2011", 
@@ -390,7 +396,7 @@ grid.arrange(plot_2011, plot_2012, plot_2013, plot_2014, ncol = 2)
 #| warning: false
 #| message: false
 
-
+# make sure that the month is in order from Jan to Dec.
 Death_data$month <- factor(Death_data$month, levels = month.abb)
 
 # Filter data for the years 
@@ -451,7 +457,7 @@ grid.arrange(plot_2015, plot_2016, plot_2017, plot_2018, ncol = 2)
 #| warning: false
 #| message: false
 
-
+# make sure that the month is in order from Jan to Dec.
 Death_data$month <- factor(Death_data$month, levels = month.abb)
 
 # Filter data for the years 
@@ -512,7 +518,7 @@ grid.arrange(plot_2019, plot_2020, plot_2021, plot_2022, ncol = 2)
 #| warning: false
 #| message: false
 
-
+# make sure that the month is in order from Jan to Dec.
 Death_data$month <- factor(Death_data$month, levels = month.abb)
 
 # Filter data for the years 
