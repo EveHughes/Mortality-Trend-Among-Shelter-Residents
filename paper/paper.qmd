@@ -22,6 +22,9 @@ toc: true
 library(tidyverse)
 library(ggplot2)
 library(dplyr)
+library(knitr)
+library(tidyr)
+library(gridExtra)
 
 Death_data <- read_csv(here::here("data/analysis_data/Num_death_analysis_data.csv"))
 AvgAge_data <- read_csv(here::here("data/analysis_data/AvgAge_death_analysis_data.csv"))
@@ -48,7 +51,7 @@ The remainder of this paper is structured as follows. @sec-data will discuss the
 
 ## Raw Data {#sec-first-point}
 
-The data used in this paper is access in from Open Data Toronto and the particular data set used was the Deaths of Shelter Residents (@toronto_deaths_shelter_residents). To analysis the data and creating graphs using the data, following package that was build in the (R program @citeR) was used: tidyverse (@tidyverse), dplyr (@dplyr), knitr (@knitr), and ggplot2 (@ggplot2). LLM (@openai2023chatgpt) was also use for this paper in term of helping with coding in R to graph data, simulating a data, cleaning data, and revising writing. 
+The data used in this paper is access in from Open Data Toronto and the particular data set used was the Deaths of Shelter Residents (@toronto_deaths_shelter_residents). To analysis the data and creating graphs using the data, following package that was build in the (R program @citeR) was used: tidyverse (@tidyverse), dplyr (@dplyr), tidyr (@tidyr), gridExtra (@gridExtra), knitr (@knitr), and ggplot2 (@ggplot2). LLM (@openai2023chatgpt) was also use for this paper in term of helping with coding in R to graph data, simulating a data, cleaning data, and revising writing. 
 
 The data used in this paper was collected by the Toronto Shelter and Support Services Division since 2007. Shelters are required to notify the City of Toronto within 24 hours of a death and submit a written report within 30 days. Consequently, the data is updated monthly on the Open Data Toronto website. The raw data set includes 10 variables and 18 observations, covering the period from 2007 to 2024, as shown in @tbl-Table1. The key variables used in this paper include: year, total decedents, average age at death for all decedents, male decedents, average age at death for male decedents, female decedents, and average age at death for female decedents. Additionally, the monthly death counts from 2007 to 2024 will be used for graphing, comprising 212 observations.
 
@@ -75,9 +78,6 @@ The data used in this paper was collected by the Toronto Shelter and Support Ser
 #| label: tbl-Table1
 #| tbl-cap: Trends in Mortality Rates Among Shelter Residents (2007-2024)
 #| echo: false
-
-library(knitr)
-library(dplyr)
 
 # Remove the 'id' column
 AvgAge_data_no_id <- AvgAge_data %>%
@@ -162,10 +162,6 @@ Death_data_filtered |>
 #| echo: false
 #| warning: false
 #| message: false
-
-library(ggplot2)
-library(tidyr)
-library(dplyr)
 
 # Reshape the data for plotting
 plot_data <- AvgAge_data %>%
@@ -273,11 +269,6 @@ For instance, to establish a connection between the increase in death numbers in
 #| message: false
 
 
-# Load necessary libraries
-library(ggplot2)
-library(dplyr)
-library(gridExtra)
-
 Death_data$month <- factor(Death_data$month, levels = month.abb)
 
 # Filter data for the years 2007 and 2008
@@ -339,11 +330,6 @@ grid.arrange(plot_2007, plot_2008, plot_2009, plot_2010, ncol = 2)
 #| warning: false
 #| message: false
 
-
-# Load necessary libraries
-library(ggplot2)
-library(dplyr)
-library(gridExtra)
 
 Death_data$month <- factor(Death_data$month, levels = month.abb)
 
