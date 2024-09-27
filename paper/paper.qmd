@@ -1,11 +1,12 @@
 ---
-title: "Mortality Trend Among Shelter Residents: Closely Tied To Virus Outbreaks"
+title: "Mortality Trend Among Shelter Residents: "
+subtitle: "Closely Tied To Virus Outbreaks"
 author: 
   - Mandy He
 thanks: "Code and data are available at: https://open.toronto.ca/dataset/deaths-of-shelter-residents/"
 date: Septmeber 27 2024
 date-format: long
-abstract: "Homelessness remain pressing issues in today’s society, particularly evident in downtown Toronto, these individuals often face severe health issues, leading to an increased risk of mortality. This paper analyzes trends in mortality rates among shelter residents in the City of Toronto from 2007 to 2024, highlighting patterns over time and exploring the factors contributing to these rates. This paper found trend in mortality rate of this minority group reflects the overall health conditions in the macro-environment. Therefore, examining these patterns can help improve provisions and reduce the number of deaths among both this vulnerable population and society at large."
+abstract: "Homelessness remain pressing issues in today’s society, particularly evident in Toronto, these individuals face severe health issues, leading to increased risk of mortality. This paper analyzes trends in mortality rates among shelter residents in the City of Toronto (2007 to 2024), highlighting patterns over time and exploring the factors contributing to these rates. This paper found trend in mortality rate of this minority group reflects the overall macro-environment health conditions. Thus, examining these patterns can help improve provisions and reduce the number of deaths among both this vulnerable population and society at large."
 format: pdf
 number-sections: true
 bibliography: references.bib 
@@ -247,7 +248,7 @@ avg_age_data |>
 
 In 2013, there was an influenza outbreak across Ontario that lasted from 2013 to 2016. Influenza is a viral infection that affects the nose, throat, and sometimes the lungs, leading to respiratory illness. Symptoms can range from mild to severe, and in some cases, the flu can result in death. The best way to prevent infection is to get vaccinated each year (@cdc_flu_key_facts). Thus, the clear trend of increasing deaths from 2013 up until 2015, followed by a drop in 2016 shown in @fig-TotalNumberofDeathByYear perfectly aligns the duration of the outbreak. This pattern closely resembles the total number of influenza outbreaks reported in the article "Influenza Outbreaks in Ontario Hospitals" (@cameron2019). According to Table 1 in the article, the number of outbreaks increased from 38 in '2013-2014' to 117 in '2014-2015', then decreased to 36 in '2015-2016'. This rise and fall in outbreaks corresponds with the trends observed in @fig-TotalNumberofDeathByYear, where the number of deaths peaked in 2015 and then significantly declined in 2016, coinciding with the flu being brought under control.
 
-One notable point is that in the article (@cameron2019), the fatality rate for the 2014-2015 outbreak was only 2.4%, despite the hundreds of flu outbreaks that occurred that year. However,@fig-TotalNumberofDeathByYear shows that the number of deaths in 2015 was around 45. This discrepancy can be explained by the fact that the data in the article pertains to hospital outbreaks, where individuals have access to better medical care. In contrast, homeless individuals may lack the resources to seek treatment, leading to a higher number of deaths in this population.
+One notable point is that in the article (@cameron2019), the fatality rate for the 2014-2015 outbreak was only 2.4%, despite the hundreds of flu outbreaks that occurred that year. However, @fig-TotalNumberofDeathByYear shows that the number of deaths in 2015 was around 45. This discrepancy can be explained by the fact that the data in the article pertains to hospital outbreaks, where individuals have access to better medical care. In contrast, homeless individuals may lack the resources to seek treatment, leading to a higher number of deaths in this population.
 
 ## Second discussion point {#sec-second-dpoint}
 
