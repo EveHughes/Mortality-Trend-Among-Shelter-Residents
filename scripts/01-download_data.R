@@ -35,8 +35,6 @@ Avg_death_age_data <- filter(datastore_resources, row_number()==2) %>% get_resou
 
 
 #### Save data ####
-# [...UPDATE THIS...]
-# change the_raw_data to whatever name you assigned when you downloaded it.
 write_csv(Num_death_data, "data/raw_data/Num_death_raw_data.csv") 
 write_csv(Avg_death_age_data, "data/raw_data/raw_age_data.csv") 
 
