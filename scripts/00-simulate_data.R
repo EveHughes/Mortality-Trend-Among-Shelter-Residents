@@ -1,11 +1,10 @@
 #### Preamble ####
-# Purpose: Simulates... [...UPDATE THIS...]
+# Purpose: Simulates a sample data of Deaths Among Shelter Residents from 2007 to 2024
 # Author: Mandy He
 # Date: 23 September 2024 
 # Contact: mandyxy.he@mail.utoronto.ca
-# License: MIT
-# Pre-requisites: 
-# Any other information needed? 
+# License: N/A
+# Pre-requisites: N/A
 
 
 #### Workspace setup ####

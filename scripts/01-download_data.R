@@ -1,11 +1,11 @@
 #### Preamble ####
-# Purpose: Downloads and saves the data from [...UPDATE THIS...]
+# Purpose: Downloads and saves the data from Open Data Toronto
 # Author: Mandy He
 # Date: 23 September 2024 
 # Contact: mandyxy.he@mail.utoronto.ca
-# License: MIT
-# Pre-requisites: [...UPDATE THIS...]
-# Any other information needed? [...UPDATE THIS...]
+# License: N/A
+# Pre-requisites: N/A
+
 
 
 #### Workspace setup ####
