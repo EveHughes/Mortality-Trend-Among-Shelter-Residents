@@ -40,7 +40,7 @@ Homelessness is a well-known issue worldwide, particularly in impoverished citie
 
 Homeless individuals often live and sleep in harsh and unsanitary conditions, which severely compromises their health. They are more likely to get diseases and suffer from various health problems due to limited access to proper healthcare and nutrition. Consequently, this significantly increases their risk of mortality. The City of Toronto is also deeply concerned about this issue and has implemented numerous aid programs and support services to assist homeless individuals. Despite these efforts, many homeless individuals continue to face significant challenges, and there are still a considerable number of deaths occurring at relatively young ages.
 
-In this paper we will look at the data @toronto_deaths_shelter_residents, which explore the trends in mortality rates among shelter residents in the City of Toronto from 2007 to 2024, highlighting patterns over time and exploring the factors contributing to these rates.The data indicates that mortality rates were relatively low, with fewer than five deaths per month in the prior 2019. However, after 2019, there was a sharp increase in the number of deaths, peaking in 2021 and 2022. This surge can be attributed to the onset of the COVID-19 pandemic in 2019, which significantly impacted public health and resulted in many fatalities.
+In this paper we will look at a data (@toronto_deaths_shelter_residents), which explore the trends in mortality rates among shelter residents in the City of Toronto from 2007 to 2024, highlighting patterns over time and exploring the factors contributing to these rates. The data indicates that mortality rates were relatively low, with fewer than five deaths per month prior of 2019. However, after 2019, there was a sharp increase in the number of deaths, peaking in 2021 and 2022. This surge can be attributed to the onset of the COVID-19 pandemic in 2019, which significantly impacted public health and resulted in many fatalities.
 
 The data was examined more in depth by analyzing the mortality rate and average mortality rate between male and female homeless individuals in shelter residences. There are a lot more male death compare to female death every single year. Additionally, the average age at death is around 50 to 60 years old, which is relatively young compared to Canada’s life expectancy. These trends are crucial for helping the city improve services provided to this population. Furthermore, from a social and economic perspective, supporting minority populations is essential for community and economic growth. If individuals in these communities are healthier and live longer, they can contribute more effectively to society.
 
@@ -52,7 +52,7 @@ The remainder of this paper is structured as follows. @sec-data will discuss the
 
 ## Raw Data {#sec-first-point}
 
-The data used in this paper is access in from Open Data Toronto and the particular data set used was the Deaths of Shelter Residents (@toronto_deaths_shelter_residents). To analysis the data and creating graphs using the data, following package that was build in the (R program @citeR) was used: tidyverse (@tidyverse), dplyr (@dplyr), tidyr (@tidyr), gridExtra (@gridExtra), knitr (@knitr), and ggplot2 (@ggplot2). LLM (@openai2023chatgpt) was also use for this paper in term of helping with coding in R to graph data, simulating a data, cleaning data, and revising writing. 
+The data used in this paper is access from Open Data Toronto and the particular data set used was the Deaths of Shelter Residents (@toronto_deaths_shelter_residents). To analysis the data and creating graphs using the data, following package that was build in the (R program @citeR) was used: tidyverse (@tidyverse), dplyr (@dplyr), tidyr (@tidyr), gridExtra (@gridExtra), knitr (@knitr), and ggplot2 (@ggplot2). LLM (@openai2023chatgpt) was also use in term of helping with coding in R to graph data, simulating data, cleaning data, and revising writing. 
 
 The data used in this paper was collected by the Toronto Shelter and Support Services Division since 2007. Shelters are required to notify the City of Toronto within 24 hours of a death and submit a written report within 30 days. Accordingly, the data is updated monthly on the Open Data Toronto website. The raw data set includes 10 variables and 18 observations, covering the period from 2007 to 2024, as shown in @tbl-Table1. The key variables used in this paper include: year, total decedents, average age at death for all decedents, male decedents, average age at death for male decedents, female decedents, and average age at death for female decedents. Additionally, the monthly death counts from 2007 to 2024 will be used for graphing, comprising 212 observations.
 
@@ -98,7 +98,7 @@ kable(AvgAge_data_no_id,
 
 ## Limitation of Data {#sec-lim}
 
-The Deaths of Shelter Residents data is part of a larger database shared by Toronto Public Health (TPH), which also includes deaths of homeless individuals living in shelters and outdoors (@toronto_homeless_deaths). Therefore, the findings in this paper focus solely on homeless individuals residing in shelters, which may limit the data set and lead to potential biases that do not fully represent the mortality of all homeless individuals.
+The Deaths of Shelter Residents data is part of a larger database shared by Toronto Public Health (TPH), which includes deaths of homeless individuals living in shelters and outdoors (@toronto_homeless_deaths). Therefore, the findings in this paper focus solely on homeless individuals residing in shelters, which limit the data set and lead to potential biases that do not fully represent the mortality of all homeless individuals.
 
 Other limitations include the absence of certain data points, such as the cause of death and additional information that could identify the deceased, due to confidentiality concerns. This lack of information may impact the reasoning behind the findings, as possible explanations will need to be drawn from other research and sources.
 
@@ -107,7 +107,7 @@ Other limitations include the absence of certain data points, such as the cause 
 
 # Results {#sec-Results}
 
-The following graph (@fig-TotalNumberofDeathByYear) shows the overall trend in the number of decedents living in shelters from 2007 to 2024. It reveals that between 2007 and 2013, the number of deaths remained quite low, under 30 each year. However, starting in 2013, the number of deaths increased, and the mortality rate never returned to the low levels seen from 2007 to 2013. The graph also highlights two significant peaks in 2015 and 2021. The increase in deaths was more pronounced in 2021 compared to 2015. Further discussion on the reasons for these peaks can be found in discussion sections (@sec-first-dpoint and @sec-second-dpoint). Furthermore, in the appendix (@sec-app), there are graph for number of death per month for each individual year.
+The following graph (@fig-TotalNumberofDeathByYear) shows the overall trend in the number of decedents living in shelters from 2007 to 2024. It reveals that between 2007 and 2013, the number of deaths remained quite low, under 30 death each year. However, starting in 2013, the number of deaths increased, and the mortality rate never returned to the low levels seen from 2007 to 2013. The graph also highlights two significant peaks in 2015 and 2021. The increase in deaths was more pronounced in 2021 compared to 2015. Further discussion on the reasons for these peaks can be found in discussion sections (@sec-first-dpoint and @sec-second-dpoint). Furthermore, in the appendix (@sec-app), there are graph for number of death per month for each individual year.
 
 ```{r}
 #| label: fig-TotalNumberofDeathByYear
@@ -198,7 +198,7 @@ plot_data |>
   ) +
   theme(plot.title = element_text(hjust = 0.5))
 ```
-@fig-AvgAgeofDecedentsFemaleVSMale further examines the differences in average age at death between females and males. It's important to note that there are significantly more male deaths than female deaths, which could result in a lower average age for males due to the larger sample size. Although the graph does not definitively indicate whether males generally die at an older age than females or vice versa, it does suggest that the average age at death for males appears to be considerably higher than that for females during many periods indicated in the graph. More information is available in @sec-3-dpoint.
+@fig-AvgAgeofDecedentsFemaleVSMale further examines the differences in average age at death between females and males. It is important to note that there are significantly more male deaths than female deaths, which could result in a lower average age for males due to the larger sample size. Although the graph does not definitively indicate whether males generally die at an older age than females or vice versa, it does suggest that the average age at death for males appears to be considerably higher than that for females during many periods indicated in the graph. More information is available in @sec-3-dpoint.
 
 ```{r}
 #| label: fig-AvgAgeofDecedentsFemaleVSMale
@@ -273,6 +273,7 @@ The connections discussed in this section are not statistically proven, as no mo
 Other data will have to be gathered and analyzed using appropriate models to establish a solid scientific connection.
 For instance, to establish a connection between the increase in death numbers in 2013 and 2019 and the flu outbreak and pandemic, data on flu-related deaths and pandemic-related deaths should be gathered and analyzed. A model should be run to test the relationship between these variables.
 
+In summary, the paper does not provide statistical evidence for all the possible reasons discussed regarding the mortality trends of homeless individuals residing in shelters. However, it can serve as a guide and signal for city organizations to enhance their efforts in supporting the homeless population.
 
 \newpage
 
