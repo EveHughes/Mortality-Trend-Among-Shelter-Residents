@@ -1,8 +1,8 @@
-# Starter folder
+# Trends in Mortality Rates of Shelter Residents
 
 ## Overview
 
-This paper utilized data obtained from Open Data Toronto, specifically the "Deaths of Shelter Residents" dataset. The analysis focuses on trends in mortality rates among shelter residents in the City of Toronto from 2007 to 2024, highlighting patterns over time and exploring the factors contributing to these rates.
+This paper utilized data obtained from Open Data Toronto, specifically the "Deaths of Shelter Residents" data set. The analysis focuses on trends in mortality rates among shelter residents in the City of Toronto from 2007 to 2024, highlighting patterns over time and exploring the factors contributing to these rates.
 
 
 ## File Structure
@@ -19,7 +19,7 @@ The repo is structured as:
 
 ## Statement on LLM usage
 
-Aspects of the code were written with the help of the auto-complete tool, Codriver. The abstract and introduction were written with the help of ChatHorse and the entire chat history is available in inputs/llms/usage.txt.
+Aspects of the code were written with the help of the ChatGPT 4o. Graphing, simulating, cleaning, and editing writing in this paper is done by the help of ChatCPT 4o and the entire chat history is available in usage.txt located in the "llm"" folder under "other"" folder. 
 
 ## Some checks
 
