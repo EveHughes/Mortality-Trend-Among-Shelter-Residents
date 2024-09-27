@@ -6,10 +6,11 @@ author:
 thanks: "Code and data are available at: https://open.toronto.ca/dataset/deaths-of-shelter-residents/"
 date: Septmeber 23 2024
 date-format: long
-abstract: "Poverty and homelessness remain pressing issues in today’s society, particularly evident in downtown Toronto, where many individuals still sleep on the streets or in subway stations. Due to these harsh living conditions, these individuals often face severe health issues, leading to an increased risk of mortality. Luckly, there are services in the city that provide place for some of these people to live. This paper analyzes the trends in mortality rates among shelter residents in the City of Toronto from 2007 to 2024, highlighting patterns over time and exploring the factors contributing to these rates."
+abstract: "Poverty and homelessness remain pressing issues in today’s society, particularly evident in downtown Toronto, where many individuals still sleep on the streets or in subway stations. Due to these harsh living conditions, these individuals often face severe health issues, leading to an increased risk of mortality. Luckily, there are services in the city that provide place for some of these people to live. This paper analyzes the trends in mortality rates among shelter residents in the City of Toronto from 2007 to 2024, highlighting patterns over time and exploring the factors contributing to these rates."
 format: pdf
 number-sections: true
 bibliography: references.bib 
+toc: true 
 
 ---
 
@@ -34,28 +35,45 @@ AvgAge_data <- read_csv(here::here("data/analysis_data/AvgAge_death_analysis_dat
 Homelessness is a well-known issue worldwide, particularly in impoverished cities and countries. It was reported approximately 15 million homeless individuals globally by the World Economic Forum in 2021 (@homelessfact). Although homelessness is more severe in developing countries, it does not mean that developed places are free from this problem. In downtown Toronto, a city that hosts numerous corporate headquarters and some of the Canada's top educational institutions, homelessness remains a significant issue. Homeless individuals can be seen on the streets and even in subway stations, showing the persistent challenges faced by the city and those without stable housing.
 
 
-Homeless individuals often live and sleep in harsh and unsanitary conditions, which severely compromises their health. They are more likely to get diseases and suffer from various health problems due to limited access to proper healthcare and nutrition. Consequently, this significantly increases their risk of mortality. The City of Toronto is also deeply concerned about this issue and has implemented numerous aid programs and support services to assist homeless individuals. Despite these efforts, many homeless individuals continue to face significant challenges, and there are still a considerable number of deaths occurring at relatively young ages
+Homeless individuals often live and sleep in harsh and unsanitary conditions, which severely compromises their health. They are more likely to get diseases and suffer from various health problems due to limited access to proper healthcare and nutrition. Consequently, this significantly increases their risk of mortality. The City of Toronto is also deeply concerned about this issue and has implemented numerous aid programs and support services to assist homeless individuals. Despite these efforts, many homeless individuals continue to face significant challenges, and there are still a considerable number of deaths occurring at relatively young ages.
 
 In this paper we will look at the data @toronto_deaths_shelter_residents, which explore the trends in mortality rates among shelter residents in the City of Toronto from 2007 to 2024, highlighting patterns over time and exploring the factors contributing to these rates.The data indicates that mortality rates were relatively low, with fewer than five deaths per month in the prior 2019. However, after 2019, there was a sharp increase in the number of deaths, peaking in 2021 and 2022. This surge can be attributed to the onset of the COVID-19 pandemic in 2019, which significantly impacted public health and resulted in many fatalities.
 
 The data was examined more in depth by analyzing the mortality rate and average mortality rate between male and female homeless individuals in shelter residences. There are a lot more male death compare to female death every single year. Additionally, the average age at death is around 50 to 60 years old, which is relatively young compared to Canada’s life expectancy. Future details about the findings will be discussed in the discussion section.
 
-The remainder of this paper is structured as follows. Section 2 will discuss the data used in the study, highlighting key aspects and limitations. Section 3 will focus on generating graphs using the data presented in Section 2. Section 4 will elaborate on the graphs from Section 3, providing interpretations and possible explanations for the findings. 
+The remainder of this paper is structured as follows. @sec-data will discuss the data used in the study, highlighting key aspects and limitations. @sec-Results will focus on generating graphs using the data presented in @sec-data. @sec-discussion will elaborate on the graphs from @sec-Results, providing interpretations and possible explanations for the findings. 
 
 
 # Data {#sec-data}
 
 ## Raw Data {#sec-first-point}
 
-The data used in this paper is access in from Open Data Toronto and the particular data set used was the Deaths of Shelter Residents (@toronto_deaths_shelter_residents). To analysis the data and creating graphs using the data, following package that was build in the (R program @citeR) was used: tidyverse (@tidyverse), dplyr (@dplyr), knitr (@knitr), and ggplot2 (@ggplot2). 
+The data used in this paper is access in from Open Data Toronto and the particular data set used was the Deaths of Shelter Residents (@toronto_deaths_shelter_residents). To analysis the data and creating graphs using the data, following package that was build in the (R program @citeR) was used: tidyverse (@tidyverse), dplyr (@dplyr), knitr (@knitr), and ggplot2 (@ggplot2). LLM (@openai2023chatgpt) was also use for this paper in term of helping with coding in R to graph data, simulating a data, cleaning data, and revising writing. 
 
-The data used in this paper was collected by the Toronto Shelter and Support Services Division since 2007. Shelters are required to notify the City of Toronto within 24 hours of a death and submit a written report within 30 days. Consequently, the data is updated monthly on the Open Data Toronto website. The raw data set includes 10 variables and 18 observations, covering the period from 2007 to 2024, as shown in Table 1 (@Tab-Table1). The key variables used in this paper include: year, total decedents, average age at death for all decedents, male decedents, average age at death for male decedents, female decedents, and average age at death for female decedents. Additionally, the monthly death counts from 2007 to 2024 will be used for graphing, comprising 212 observations.
+The data used in this paper was collected by the Toronto Shelter and Support Services Division since 2007. Shelters are required to notify the City of Toronto within 24 hours of a death and submit a written report within 30 days. Consequently, the data is updated monthly on the Open Data Toronto website. The raw data set includes 10 variables and 18 observations, covering the period from 2007 to 2024, as shown in @tbl-Table1. The key variables used in this paper include: year, total decedents, average age at death for all decedents, male decedents, average age at death for male decedents, female decedents, and average age at death for female decedents. Additionally, the monthly death counts from 2007 to 2024 will be used for graphing, comprising 212 observations.
 
 
 
+**Variable in the data are as following:**
+
+**id:** A unique row identifier is used in the Open Data database, as names are not reported due to confidentiality. 
+
+**Year:** The calendar year during which the number of deaths is reported.
+
+**Month:** The month during which the number of deaths is reported. 
+
+**Total decedents:** Total number of shelter residents who died in the reported month/year.
+
+**Male:** Total number of male shelter residents who died in the reported month/year.
+
+**Female:** Total number of female shelter residents who died in the reported month/year.
+
+**Transgender/Non-binary/Two-Spirit:** Total number of transgender, non-binary, and Two-Spirit shelter residents who died in the reported month/year.
+
+\newpage
 ```{r}
-#| label: Tab-Table1
-#| fig-cap: Yearly Mortality rate from 2007-2024
+#| label: tbl-Table1
+#| tbl-cap: Trends in Mortality Rates Among Shelter Residents (2007-2024)
 #| echo: false
 
 library(knitr)
@@ -67,7 +85,6 @@ AvgAge_data_no_id <- AvgAge_data %>%
 
 # Display the table without the 'id' column
 kable(AvgAge_data_no_id, 
-      caption = "Trends in Mortality Rates Among Shelter Residents (2007-2024)",
       col.names = c("Year", "Total Decedents", 
                     "Avg Age of Death (All)", "Male Decedents", 
                     "Avg Age of Death (Male)", "Female Decedents", 
@@ -75,7 +92,7 @@ kable(AvgAge_data_no_id,
                     "Avg Age of Death (Trans/NB/2S)"))
 ```
 
-## Limitation of Data {#sec-first-point}
+## Limitation of Data {#sec-lim}
 
 The Deaths of Shelter Residents data is part of a larger database shared by Toronto Public Health (TPH), which also includes deaths of homeless individuals living in shelters and outdoors (@toronto_homeless_deaths). Therefore, the findings in this paper focus solely on homeless individuals residing in shelters, which may limit the data set and lead to potential biases that do not fully represent the mortality of all homeless individuals.
 
@@ -84,7 +101,9 @@ Other limitations include the absence of certain data points, such as the cause 
 
 \newpage
 
-# Results
+# Results {#sec-Results}
+
+The following graph (@fig-TotalNumberofDeathByYear) shows the overall trend in the number of decedents living in shelters from 2007 to 2024. It reveals that between 2007 and 2013, the number of deaths remained quite low, under 30 each year. However, starting in 2013, the number of deaths increased, and the mortality rate never returned to the low levels seen from 2007 to 2013. The graph also highlights two significant peaks in 2015 and 2021. The increase in deaths was more pronounced in 2021 compared to 2015. Further discussion on the reasons for these peaks can be found in discussion sections (@sec-first-dpoint and @sec-second-dpoint). Furthermore, in the appendix (@sec-app), there are graph for number of death per month for each individual year.
 
 ```{r}
 #| label: fig-TotalNumberofDeathByYear 
@@ -95,39 +114,17 @@ AvgAge_data |>
   ggplot(aes(x = year, y = total_decedents)) +
   geom_point() +
   geom_line() +
-  labs(title = "Total Decedents by Year", x = "Year", y = "Total Decedents") +
+  labs(title = "Total Shelter Residents Decedents from 2007 to 2024", x = "Year", y = "Total Decedents") +
   theme_minimal() +
+   theme(axis.text.x = element_text(angle = 45)) +
   theme(plot.title = element_text(hjust = 0.5)) + 
   scale_x_continuous(breaks = unique(AvgAge_data$year)) +
   scale_y_continuous(breaks = seq(0, max(AvgAge_data$total_decedents), by = 20))
 
 ```
 
-```{r}
-#| label: fig-TotalDecedentsbyMonth
-#| fig-cap: Yearly Mortality rate from 2007-2024
-#| echo: false
-
-# Combine Year and Month into a single column with last two digits of the year
-Death_data$YearMonth <- paste(substr(Death_data$year, 3, 4), Death_data$month, sep = "-")
-
-# Convert YearMonth to a factor with ordered levels
-Death_data$YearMonth <- factor(Death_data$YearMonth, levels = unique(Death_data$YearMonth))
-
-# Plot the graph
-Death_data |>
-  ggplot(aes(x = YearMonth, y = total_decedents, group=1)) +
-  geom_line(color="blue") +
-  geom_point(color="red") +
-  scale_x_discrete(breaks = Death_data$YearMonth[seq(1, nrow(Death_data), by = 12)]) + # Show only every 12th month (i.e., January each year)
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, size = 8)) + # Display x-axis labels vertically
-  labs(title="Trends in Total Decedents by Month and Year", 
-       x="Month-Year", 
-       y="Total Decedents") +
-  theme_minimal()
-```
-
-
+\newpage
+@fig-TotalDecedentbyMonthcovid provides a close-up view of the years 2019 to 2024, covering the period of the COVID-19 pandemic and a bit of the post-pandemic phase. During this time, the number of deaths does not exhibit a clear trend as time progresses. However, in many months during these years, the number of deaths remains notably high, often fluctuating between 10 and 15 deaths per month. Detailed discussion found in @sec-second-dpoint.
 ```{r}
 #| label: fig-TotalDecedentbyMonthcovid
 #| fig-cap: Yearly Mortality rate from 2019-2023
@@ -146,16 +143,19 @@ Death_data_filtered$YearMonth <- factor(Death_data_filtered$YearMonth, levels = 
 # Plot the graph for filtered data
 Death_data_filtered |>
   ggplot(aes(x = YearMonth, y = total_decedents, group = 1)) +
-  geom_line(color = "blue") +
-  geom_point(color = "red") +
+  geom_line(color = "black") +
+  geom_point(color = "black") +
   scale_x_discrete(breaks = Death_data_filtered$YearMonth[seq(1, nrow(Death_data_filtered), by = 6)]) + # Show every 6th month
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, size = 8)) + # Display x-axis labels vertically
-  labs(title = "Trends in Total Decedents by Month and Year (2019-2023)",
+  labs(title = "Trends in Total Decedents by Month(2019-2023)",
        x = "Month-Year",
        y = "Total Decedents") +
-  theme_minimal()
-```
+  theme_minimal()+
+  theme(plot.title = element_text(hjust = 0.5))
 
+```
+\newpage
+@fig-T illustrates the number of deaths among genders. The bar graph clearly shows that the number of male decedents is significantly greater than that of female decedents, a trend consistent across all the years presented. Additionally, the graph indicates that the mortality rate among males is more volatile over the years, particularly from 2019 to 2022. These results may be attributed to the proportion of males living in shelters; further details can be found in @sec-3-dpoint.
 ```{r}
 #| label: fig-T 
 #| fig-cap: Total Decedents Female VS Male
@@ -181,13 +181,17 @@ plot_data <- plot_data %>%
 # Create the bar graph with adjusted year labels
 ggplot(plot_data, aes(x = year_short, y = Mortality, fill = Gender)) +
   geom_bar(stat = "identity", position = position_dodge(width = 0.8), width = 0.7) +
-  labs(title = "Mortality Numbers of Male and Female Decedents",
+  labs(title = "Mortality Numbers of Male Vs Female Decedents over 2007 to 2024",
        x = "Year (2000s)",
        y = "Number of Decedents") +
   scale_fill_manual(values = c("Male_decedents" = "blue", "Female_decedents" = "pink")) +
-  theme_minimal()
+  theme_minimal() +
+  theme(legend.title = element_blank(),
+        legend.position = "bottom") +
+  theme(plot.title = element_text(hjust = 0.5))
 
 ```
+@fig-AvgAgeofDecedentsFemaleVSMale further examines the differences in average age at death between females and males. It's important to note that there are significantly more male deaths than female deaths, which could result in a lower average age for males due to the larger sample size. Although the graph does not definitively indicate whether males generally die at an older age than females or vice versa, it does suggest that the average age at death for males appears to be considerably higher than that for females during many periods indicated in the graph. More information is available in @sec-3-dpoint.
 
 ```{r}
 #| label: fig-AvgAgeofDecedentsFemaleVSMale 
@@ -208,35 +212,36 @@ avg_age_data <- AvgAge_data %>%
 ggplot(avg_age_data, aes(x = year_short, y = Average_Age, color = Gender, group = Gender)) +
   geom_line(size = 1) +   
   geom_point(size = 2) +    
-  labs(title = "Average Age of Death for Male and Female Decedents",
+  labs(title = "Average Age of Death for Male Vs Female Decedents",
        x = "Year",
        y = "Average Age of Death") +
   scale_color_manual(values = c("Average_age_of_death_male_decedents" = "blue", 
                                  "Average_age_of_death_female_decedents" = "pink")) +
   theme_minimal() +
   theme(legend.title = element_blank(),
-        legend.position = "bottom") 
+        legend.position = "bottom") +
+  theme(plot.title = element_text(hjust = 0.5))
 
 ```
 
 \newpage
 
-# Discussion
+# Discussion {#sec-discussion}
 
-## First discussion point {#sec-first-point}
+## First discussion point {#sec-first-dpoint}
 @fig-TotalNumberofDeathByYear shows the total number of decedents among homeless individuals living in shelters. The graph visualizes two notable increases in 2013 and 2019. According to making connection with other sources, the primary causes of these increases are linked to macro health conditions occurring during those times.
 
-In 2013, there was an influenza outbreak across Ontario that lasted from 2013 to 2016. Influenza is a viral infection that affects the nose, throat, and sometimes the lungs, leading to respiratory illness. Symptoms can range from mild to severe, and in some cases, the flu can result in death. The best way to prevent infection is to get vaccinated each year (@cdc_flu_key_facts). There is a clear trend of increasing deaths up until 2015, followed by a drop in 2016. This pattern closely resembles the total number of influenza outbreaks reported in the article "Influenza Outbreaks in Ontario Hospitals" (@cameron2019). According to Table 1 in the article, the number of outbreaks increased from 38 in 2013-2014 to 117 in 2014-2015, then decreased to 36 in 2015-2016. This rise and fall in outbreaks corresponds with the trends observed in @fig-TotalNumberofDeathByYear, where the number of deaths peaked in 2015 and then significantly declined in 2016, coinciding with the flu being brought under control.
+In 2013, there was an influenza outbreak across Ontario that lasted from 2013 to 2016. Influenza is a viral infection that affects the nose, throat, and sometimes the lungs, leading to respiratory illness. Symptoms can range from mild to severe, and in some cases, the flu can result in death. The best way to prevent infection is to get vaccinated each year (@cdc_flu_key_facts). Thus, the clear trend of increasing deaths from 2013 up until 2015, followed by a drop in 2016 shown in @fig-TotalNumberofDeathByYear perfectly aligns the duration of the outbreak. This pattern closely resembles the total number of influenza outbreaks reported in the article "Influenza Outbreaks in Ontario Hospitals" (@cameron2019). According to Table 1 in the article, the number of outbreaks increased from 38 in '2013-2014' to 117 in '2014-2015', then decreased to 36 in '2015-2016'. This rise and fall in outbreaks corresponds with the trends observed in @fig-TotalNumberofDeathByYear, where the number of deaths peaked in 2015 and then significantly declined in 2016, coinciding with the flu being brought under control.
 
-One notable point is that in the article, the fatality rate for the 2014-2015 outbreak was only 2.4%, despite the hundreds of flu outbreaks that occurred that year. However,@fig-TotalNumberofDeathByYear shows that the number of deaths in 2015 was around 45. This discrepancy can be explained by the fact that the data in the article pertains to hospital outbreaks, where individuals have access to better medical care. In contrast, homeless individuals may lack the resources to seek treatment, leading to a higher number of deaths in this population.
+One notable point is that in the article (@cameron2019), the fatality rate for the 2014-2015 outbreak was only 2.4%, despite the hundreds of flu outbreaks that occurred that year. However,@fig-TotalNumberofDeathByYear shows that the number of deaths in 2015 was around 45. This discrepancy can be explained by the fact that the data in the article pertains to hospital outbreaks, where individuals have access to better medical care. In contrast, homeless individuals may lack the resources to seek treatment, leading to a higher number of deaths in this population.
 
-## Second discussion point
+## Second discussion point {#sec-second-dpoint}
 
 Another clear increasing trend in the mortality rate is evident in 2019, as shown in @fig-TotalNumberofDeathByYear. This is not surprising, given that people around the world were experiencing and still recovering from the COVID-19 pandemic, which began in 2019 and continued until the end of 2023. To better understand the impact, the Government of Canada (@canada_health_infobase) continuously updates the numbers of cases and deaths related to the pandemic, showing a significant rise in fatalities from 2021 to 2022, followed by a decline after 2023.
 
 Additionally, the challenging living conditions faced by homeless individuals, compared to those of wealthier individuals who also experienced hardships during this time, suggest that the mortality rates among shelter residents are likely to remain elevated. COVID-19 was also a primary driver behind the large number of deaths, as evidenced by the immediate decrease in the number of deaths following the post-pandemic period shown in @fig-TotalDecedentbyMonthcovid.
 
-## Third discussion point
+## Third discussion point {#sec-3-dpoint}
 
 From @fig-T, it is evident that the mortality rate for males is significantly higher than that for females. One reason for this observation is that the proportion of male residents in shelters is greater than that of female residents, with 60% male and only 40% female (@toronto_shelter_flow_data). Nonetheless, research has shown that females tend to live longer than males at all stages of life, from infancy to young adulthood and into retirement (@ourworldindata_life_expectancy). The overall reason for the higher male mortality rate compared to females can be attributed to genetic factors as well as differences in health awareness and behaviors between the two genders.
 
@@ -258,31 +263,302 @@ For instance, to establish a connection between the increase in death numbers in
 
 \appendix
 
-# Appendix {-}
+# Appendix {#sec-app}
+
+```{r}
+#| label: fig-2007-2010
+#| fig-cap: Monthly Mortality rate from 2007-2010
+#| echo: false
+#| warning: false
+#| message: false
 
 
-# Additional data details
+# Load necessary libraries
+library(ggplot2)
+library(dplyr)
+library(gridExtra)
 
-# Model details {#sec-model-details}
+Death_data$month <- factor(Death_data$month, levels = month.abb)
 
-## Posterior predictive check
+# Filter data for the years 2007 and 2008
+current_year_data_2007 <- Death_data %>% filter(year == 2007)
+current_year_data_2008 <- Death_data %>% filter(year == 2008)
+current_year_data_2009 <- Death_data %>% filter(year == 2009)
+current_year_data_2010 <- Death_data %>% filter(year == 2010)
 
-In @fig-ppcheckandposteriorvsprior-1 we implement a posterior predictive check. This shows...
 
-In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows... 
+# Create the bar plots for 2007 and 2008
+plot_2007 <- ggplot(current_year_data_2007, aes(x = month, y = total_decedents)) +
+  geom_bar(stat = "identity", fill = "black") +
+  labs(title = "Total Decedents by Month in 2007", 
+       x = "Month", 
+       y = "# Decedents") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45))+
+  theme(plot.title = element_text(hjust = 0.5, size = 10))
+
+plot_2008 <- ggplot(current_year_data_2008, aes(x = month, y = total_decedents)) +
+  geom_bar(stat = "identity", fill = "black") +
+  labs(title = "Total Decedents by Month in 2008", 
+       x = "Month", 
+       y = "# Decedents") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45))+
+  theme(plot.title = element_text(hjust = 0.5, size = 10))
+
+plot_2009 <- ggplot(current_year_data_2009, aes(x = month, y = total_decedents)) +
+  geom_bar(stat = "identity", fill = "black") +
+  labs(title = "Total Decedents by Month in 2009", 
+       x = "Month", 
+       y = "# Decedents") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45)) +
+  theme(plot.title = element_text(hjust = 0.5, size = 10))
+
+plot_2010 <- ggplot(current_year_data_2010, aes(x = month, y = total_decedents)) +
+  geom_bar(stat = "identity", fill = "black") +
+  labs(title = "Total Decedents by Month in 2010", 
+       x = "Month", 
+       y = "# Decedents") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45)) +
+  theme(plot.title = element_text(hjust = 0.5, size = 10))
+
+
+# Arrange plots side by side
+grid.arrange(plot_2007, plot_2008, plot_2009, plot_2010, ncol = 2)
+
+```
 
 
 
-## Diagnostics
+```{r}
+#| label: fig-2011-2014
+#| fig-cap: Monthly Mortality rate from 2011-2014
+#| echo: false
+#| warning: false
+#| message: false
 
-@fig-stanareyouokay-1 is a trace plot. It shows... This suggests...
 
-@fig-stanareyouokay-2 is a Rhat plot. It shows... This suggests...
+# Load necessary libraries
+library(ggplot2)
+library(dplyr)
+library(gridExtra)
+
+Death_data$month <- factor(Death_data$month, levels = month.abb)
+
+# Filter data for the years 
+current_year_data_2011 <- Death_data %>% filter(year == 2011)
+current_year_data_2012 <- Death_data %>% filter(year == 2012)
+current_year_data_2013 <- Death_data %>% filter(year == 2013)
+current_year_data_2014 <- Death_data %>% filter(year == 2014)
+
+
+
+plot_2011 <- ggplot(current_year_data_2011, aes(x = month, y = total_decedents)) +
+  geom_bar(stat = "identity", fill = "black") +
+  labs(title = "Total Decedents by Month in 2011", 
+       x = "Month", 
+       y = "# Decedents") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45)) +
+  theme(plot.title = element_text(hjust = 0.5, size = 10))
+
+plot_2012 <- ggplot(current_year_data_2012, aes(x = month, y = total_decedents)) +
+  geom_bar(stat = "identity", fill = "black") +
+  labs(title = "Total Decedents by Month in 2012", 
+       x = "Month", 
+       y = "# Decedents") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45)) +
+  theme(plot.title = element_text(hjust = 0.5, size = 10))
+
+plot_2013 <- ggplot(current_year_data_2013, aes(x = month, y = total_decedents)) +
+  geom_bar(stat = "identity", fill = "black") +
+  labs(title = "Total Decedents by Month in 2013", 
+       x = "Month", 
+       y = "# Decedents") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45)) +
+  theme(plot.title = element_text(hjust = 0.5, size = 10))
+
+plot_2014 <- ggplot(current_year_data_2014, aes(x = month, y = total_decedents)) +
+  geom_bar(stat = "identity", fill = "black") +
+  labs(title = "Total Decedents by Month in 2014", 
+       x = "Month", 
+       y = "# Decedents") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45)) +
+  theme(plot.title = element_text(hjust = 0.5, size = 10))
+
+
+# Arrange plots side by side
+grid.arrange(plot_2011, plot_2012, plot_2013, plot_2014, ncol = 2)
+
+```
+
+```{r}
+#| label: fig-2015-2018
+#| fig-cap: Monthly Mortality rate from 2015-2018
+#| echo: false
+#| warning: false
+#| message: false
+
+
+Death_data$month <- factor(Death_data$month, levels = month.abb)
+
+# Filter data for the years 
+
+current_year_data_2015 <- Death_data %>% filter(year == 2015)
+current_year_data_2016 <- Death_data %>% filter(year == 2016)
+current_year_data_2017 <- Death_data %>% filter(year == 2017)
+current_year_data_2018 <- Death_data %>% filter(year == 2018)
+
+
+# Create the bar plots
+
+plot_2015 <- ggplot(current_year_data_2015, aes(x = month, y = total_decedents)) +
+  geom_bar(stat = "identity", fill = "black") +
+  labs(title = "Total Decedents by Month in 2015", 
+       x = "Month", 
+       y = "# Decedents") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45)) +
+  theme(plot.title = element_text(hjust = 0.5, size = 10))
+
+plot_2016 <- ggplot(current_year_data_2016, aes(x = month, y = total_decedents)) +
+  geom_bar(stat = "identity", fill = "black") +
+  labs(title = "Total Decedents by Month in 2016", 
+       x = "Month", 
+       y = "# Decedents") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45)) +
+  theme(plot.title = element_text(hjust = 0.5, size = 10))
+
+plot_2017 <- ggplot(current_year_data_2017, aes(x = month, y = total_decedents)) +
+  geom_bar(stat = "identity", fill = "black") +
+  labs(title = "Total Decedents by Month in 2017", 
+       x = "Month", 
+       y = "# Decedents") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45)) +
+  theme(plot.title = element_text(hjust = 0.5, size = 10))
+
+plot_2018 <- ggplot(current_year_data_2018, aes(x = month, y = total_decedents)) +
+  geom_bar(stat = "identity", fill = "black") +
+  labs(title = "Total Decedents by Month in 2018", 
+       x = "Month", 
+       y = "# Decedents") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45)) +
+  theme(plot.title = element_text(hjust = 0.5, size = 10))
+
+# Arrange plots side by side
+grid.arrange(plot_2015, plot_2016, plot_2017, plot_2018, ncol = 2)
+
+```
+
+```{r}
+#| label: fig-2019-2022
+#| fig-cap: Monthly Mortality rate from 2019-2022
+#| echo: false
+#| warning: false
+#| message: false
+
+
+Death_data$month <- factor(Death_data$month, levels = month.abb)
+
+# Filter data for the years 
+
+current_year_data_2019 <- Death_data %>% filter(year == 2019)
+current_year_data_2020 <- Death_data %>% filter(year == 2020)
+current_year_data_2021 <- Death_data %>% filter(year == 2021)
+current_year_data_2022 <- Death_data %>% filter(year == 2022)
+
+
+# Create the bar plots
+plot_2019 <- ggplot(current_year_data_2019, aes(x = month, y = total_decedents)) +
+  geom_bar(stat = "identity", fill = "black") +
+  labs(title = "Total Decedents by Month in 2019", 
+       x = "Month", 
+       y = "# Decedents") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45)) +
+  theme(plot.title = element_text(hjust = 0.5, size = 10))
+
+plot_2020 <- ggplot(current_year_data_2020, aes(x = month, y = total_decedents)) +
+  geom_bar(stat = "identity", fill = "black") +
+  labs(title = "Total Decedents by Month in 2020", 
+       x = "Month", 
+       y = "# Decedents") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45)) +
+  theme(plot.title = element_text(hjust = 0.5, size = 10))
+
+plot_2021 <- ggplot(current_year_data_2021, aes(x = month, y = total_decedents)) +
+  geom_bar(stat = "identity", fill = "black") +
+  labs(title = "Total Decedents by Month in 2021", 
+       x = "Month", 
+       y = "# Decedents") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45)) +
+  theme(plot.title = element_text(hjust = 0.5, size = 10))
+
+plot_2022 <- ggplot(current_year_data_2022, aes(x = month, y = total_decedents)) +
+  geom_bar(stat = "identity", fill = "black") +
+  labs(title = "Total Decedents by Month in 2022", 
+       x = "Month", 
+       y = "# Decedents") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45)) +
+  theme(plot.title = element_text(hjust = 0.5, size = 10))
+
+
+# Arrange plots side by side
+grid.arrange(plot_2019, plot_2020, plot_2021, plot_2022, ncol = 2)
+
+```
+
+```{r}
+#| label: fig-2023-2024
+#| fig-cap: Monthly Mortality rate from 2023-2024
+#| echo: false
+#| warning: false
+#| message: false
+
+
+Death_data$month <- factor(Death_data$month, levels = month.abb)
+
+# Filter data for the years 
+current_year_data_2023 <- Death_data %>% filter(year == 2023)
+current_year_data_2024 <- Death_data %>% filter(year == 2024)
+
+# Create the bar plots
+plot_2023 <- ggplot(current_year_data_2023, aes(x = month, y = total_decedents)) +
+  geom_bar(stat = "identity", fill = "black") +
+  labs(title = "Total Decedents by Month in 2023", 
+       x = "Month", 
+       y = "# Decedents") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45)) +
+  theme(plot.title = element_text(hjust = 0.5, size = 10))
+
+plot_2024 <- ggplot(current_year_data_2024, aes(x = month, y = total_decedents)) +
+  geom_bar(stat = "identity", fill = "black") +
+  labs(title = "Total Decedents by Month in 2024", 
+       x = "Month", 
+       y = "# Decedents") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45)) +
+  theme(plot.title = element_text(hjust = 0.5, size = 10))
+
+# Arrange plots side by side
+grid.arrange(plot_2023, plot_2024, ncol = 2)
+
+```
 
 
 \newpage
-
-
 # References
 
 
