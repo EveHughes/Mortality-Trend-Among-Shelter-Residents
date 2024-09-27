@@ -1,7 +1,7 @@
 #### Preamble ####
-# Purpose: Cleans the raw data so variable is easier to call 
+# Purpose: Cleans the raw data so variable is easier to call
 # Author: Mandy He
-# Date: 23 September 2024 
+# Date: 23 September 2024
 # Contact: mandyxy.he@mail.utoronto.ca
 # License: N/A
 # Pre-requisites: N/A
@@ -15,7 +15,7 @@ library(readr)
 
 #### Clean data ####
 
-## clean the number of death data frist 
+## clean the number of death data frist
 raw_death_data <- read_csv("data/raw_data/Num_death_raw_data.csv")
 
 # Display the first few rows of the original data set
@@ -33,10 +33,8 @@ cleaned_death_data <- raw_death_data %>%
     female = `Female`,
     transgender_nonbinary_twospirit = `Transgender/Non-binary/Two-Spirit`
   ) %>%
-  
   # Replace "n/a" with 0 in the relevant columns
   mutate(across(everything(), ~ ifelse(. == "n/a", 0, .))) %>%
-  
   # Convert relevant columns to numeric
   mutate(
     id = as.integer(id),
@@ -51,14 +49,7 @@ cleaned_death_data <- raw_death_data %>%
 # Display the cleaned dataset
 head(cleaned_death_data)
 
-#Key Changes: Backticks: I added backticks around all column names that contain spaces or special characters (e.g., Total decedents, Transgender/Non-binary/Two-Spirit).
-#Usage:Replace the File Path: Ensure to replace "path_to_your_file.csv" with the path to your actual dataset.
-#Run the Script: Execute the script, and it should run without errors.
-
-
-
-
-## Clean the Average age of death data. 
+## Clean the Average age of death data.
 raw_age_data <- read_csv("data/raw_data/raw_age_data.csv")
 
 # Display the first few rows of the original dataset
@@ -66,7 +57,6 @@ head(raw_age_data)
 
 # Clean the data
 cleaned_avg_age_death_data <- raw_age_data %>%
-  
   # Rename columns to remove spaces and special characters
   rename(
     id = `_id`,
@@ -80,14 +70,12 @@ cleaned_avg_age_death_data <- raw_age_data %>%
     Transgender_Non_binary_Two_Spirit_decedents = `Transgender/Non-binary/Two-Spirit decedents`,
     Avg_age_of_death_transgender_non_binary_two_spirit_decedents = `Avg age of death, transgender/non-binary/two-spirit decedents`
   ) %>%
-  
   # Replace "n/a" with 0
   mutate(across(everything(), ~ ifelse(. == "n/a", 0, .))) %>%
-  
   # Convert relevant columns to numeric
   mutate(
     id = as.integer(id),
-    year = ifelse(year == "2024 ytd", 2024, as.integer(year)),  # Handle '2024 ytd'
+    year = ifelse(year == "2024 ytd", 2024, as.integer(year)), # Handle '2024 ytd'
     total_decedents = as.integer(total_decedents),
     Average_age_of_death_all_decedents = as.numeric(Average_age_of_death_all_decedents),
     Male_decedents = as.integer(Male_decedents),
@@ -100,11 +88,6 @@ cleaned_avg_age_death_data <- raw_age_data %>%
 
 # Display the cleaned data
 head(cleaned_avg_age_death_data)
-
-#Key Changes Made:
-#Replace "n/a" with 0: The mutate(across(...)) function replaces "n/a" values with 0 across all columns.
-#Handle Year "2024 ytd": This specific entry is converted to 2024 using ifelse.
-#Convert Columns to Numeric: The relevant columns are converted to numeric types where necessary.
 
 #### Save data ####
 write_csv(cleaned_death_data, "data/analysis_data/Num_death_analysis_data.csv")
