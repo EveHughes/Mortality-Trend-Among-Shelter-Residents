@@ -21,10 +21,3 @@ The repo is structured as:
 
 Aspects of the code were written with the help of the ChatGPT 4o. Graphing, simulating, cleaning, and editing writing in this paper is done by the help of ChatCPT 4o and the entire chat history is available in usage.txt located in the "llm" folder under "other" folder. 
 
-## Some checks
-
-- [ ] Change the rproj file name so that it's not starter_folder.Rproj
-- [ ] Change the README title so that it's not Starter folder
-- [ ] Remove files that you're not using
-- [ ] Update comments in R scripts
-- [ ] Remove this checklist
