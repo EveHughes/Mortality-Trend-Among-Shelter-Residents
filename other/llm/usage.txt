@@ -1,6 +1,231 @@
 LLM: ChatGPT-4.
 Date: 2 January 2024
 
+
+LLM usage for Simulation:
+You said:
+can you write me a simulation for this data : This dataset provides data about Deaths of Shelter Residents.
+
+More information on the initiative is available on the City’s website: Deaths of Shelter Residents.
+
+Limitations
+For reasons of client privacy and respect for confidentiality, even in death, we are not able to provide names, dates of birth, place of death, or any other information that might identify the deceased. We can present this data in aggregate form only. Average age of death is not provided in instances where only one decedent is represented in the data. this is a sample :   _id  Year Month Total decedents  Male Female Transgender/Non-binary/Two-Spirit
+   <int> <int> <chr>             <int> <int>  <int> <chr>                              
+ 1     1  2007 Jan                   0     0      0 n/a                                
+ 2     2  2007 Feb                   3     3      0 n/a                                
+ 3     3  2007 Mar                   3     2      1 n/a                                
+ 4     4  2007 Apr                   1     1      0 n/a                                
+ 5     5  2007 May                   2     2      0 n/a                                
+ 6     6  2007 Jun                   3     3      0 n/a                                
+ 7     7  2007 Jul                   2     2      0 n/a                                
+ 8     8  2007 Aug                   2     2      0 n/a                                
+ 9     9  2007 Sep                   2     2      0 n/a                                
+10    10  2007 Oct                   3     2      1 n/a  
+
+
+ChatGPT said:
+ChatGPT
+Here’s how you can create a simulation for the dataset on deaths of shelter residents using R. This code generates synthetic data that maintains the structure and distribution of your original dataset:
+
+r
+Copy code
+# Load necessary library
+library(dplyr)
+
+# Set parameters for the simulation
+start_year <- 2007
+end_year <- 2024
+months <- month.abb  # Built-in R vector for month abbreviations
+
+# Initialize an empty data frame to hold the data
+data <- data.frame()
+
+# Loop through the years and months to generate data
+for (year in start_year:end_year) {
+  for (month in months) {
+    # Randomly determine the total number of decedents for the month
+    total_decedents <- rpois(1, lambda = 2)  # Using Poisson distribution for count data
+    
+    # Ensure total decedents is not negative
+    total_decedents <- max(total_decedents, 0)
+    
+    # Randomly assign gender categories based on proportions
+    if (total_decedents > 0) {
+      male <- sample(0:total_decedents, 1)  # Randomly assign number of males
+      female <- total_decedents - male        # The rest will be females
+      transgender_non_binary <- sample(0:1, 1)  # Randomly assign Transgender/Non-binary/Two-Spirit
+    } else {
+      male <- female <- transgender_non_binary <- 0
+    }
+    
+    # Create a new row of data
+    new_row <- data.frame(
+      _id = nrow(data) + 1,
+      Year = year,
+      Month = month,
+      Total_decedents = total_decedents,
+      Male = male,
+      Female = female,
+      Transgender_Non_binary_Two_Spirit = transgender_non_binary
+    )
+    
+    # Append the new row to the data frame
+    data <- bind_rows(data, new_row)
+  }
+}
+
+# Display the first few rows of the simulated data
+head(data)
+
+
+LLM Usage for data cleaning:
+
+You said: 
+can you write a code that  clean the data for me, i will also want all n/a to be 0 : 
+
+Here’s a complete R script that cleans your dataset by replacing all instances of "n/a" with 0 and ensuring that all relevant columns are numeric. It will also keep the format of the original dataset intact.
+
+ChatGPT said:
+ChatGPT
+R Code to Clean the Data
+r
+Copy code
+# Load necessary libraries
+library(dplyr)
+library(readr)
+
+# Sample data as a string (you can replace this with reading from a CSV)
+data <- read_csv("path_to_your_file.csv")
+
+# Display the first few rows of the original dataset
+print("Original Data:")
+print(head(data))
+
+# Clean the data
+cleaned_data <- data %>%
+  # Replace "n/a" with 0
+  mutate(across(everything(), ~ ifelse(. == "n/a", 0, .))) %>%
+  
+  # Convert relevant columns to numeric
+  mutate(
+    _id = as.integer(_id),
+    Year = as.integer(Year),
+    Month = as.character(Month),
+    `Total decedents` = as.integer(`Total decedents`),
+    Male = as.integer(Male),
+    Female = as.integer(Female),
+    `Transgender/Non-binary/Two-Spirit` = as.integer(`Transgender/Non-binary/Two-Spirit`)
+  )
+
+# Display the cleaned data
+print("Cleaned Data:")
+print(head(cleaned_data))
+
+# Optionally write the cleaned data to a new CSV
+write_csv(cleaned_data, "data/cleaned_data.csv")
+
+
+LLM uasage for coding test: 
+
+You said: 
+how to test for neg number 
+
+ChatGPT said:
+ChatGPT
+To test for negative numbers in your cleaned dataset, you can create a function that checks if any of the specified numeric columns contain negative values. Here’s how you can do it in R:
+
+Test for Negative Numbers
+This test checks if there are any negative values in the relevant columns of your dataset.
+
+r
+Copy code
+# Test: Check for Negative Numbers
+test_negative_numbers <- function(cleaned_data) {
+  # Define the relevant columns to check for negative numbers
+  numeric_columns <- c(
+    "Total decedents",
+    "Average age of death, all decedents",
+    "Male decedents",
+    "Average age of death, male decedents",
+    "Female decedents",
+    "Average age of death, female decedents",
+    "Transgender/Non-binary/Two-Spirit decedents",
+    "Avg age of death, transgender/non-binary/two-spirit decedents"
+  )
+  
+  # Check for negative values in the specified columns
+  has_negative <- any(sapply(cleaned_data[numeric_columns], function(x) any(x < 0)))
+  
+  if (!has_negative) {
+    print("Negative Number Test Passed: No negative values found in the relevant columns.")
+  } else {
+    print("Negative Number Test Failed: Negative values found in the relevant columns.")
+  }
+}
+
+# Run the Negative Number Test
+test_negative_numbers(cleaned_data)
+
+You said:
+can you write me two test 
+ChatGPT said:
+ChatGPT
+Sure! Here are two tests that you can run to validate the cleaning process of your dataset in R. Each test checks for specific conditions to ensure the data is cleaned properly.
+
+Test 1: Check for "n/a" Replacement
+This test checks that all "n/a" values in the dataset have been replaced with 0.
+
+r
+Copy code
+# Test 1: Check for "n/a" Replacement
+test_n_a_replacement <- function(cleaned_data) {
+  # Check if any "n/a" values remain in the data
+  has_na <- any(cleaned_data == "n/a")
+  
+  if (!has_na) {
+    print("Test 1 Passed: All 'n/a' values have been replaced with 0.")
+  } else {
+    print("Test 1 Failed: Some 'n/a' values remain in the data.")
+  }
+}
+
+# Run Test 1
+test_n_a_replacement(cleaned_data)
+Test 2: Check Numeric Conversion
+This test checks if the relevant columns have been correctly converted to numeric types and that there are no non-numeric values present.
+
+r
+Copy code
+# Test 2: Check Numeric Conversion
+test_numeric_conversion <- function(cleaned_data) {
+  # Check if the relevant columns are of numeric type
+  numeric_columns <- c(
+    "Total decedents",
+    "Average age of death, all decedents",
+    "Male decedents",
+    "Average age of death, male decedents",
+    "Female decedents",
+    "Average age of death, female decedents",
+    "Transgender/Non-binary/Two-Spirit decedents",
+    "Avg age of death, transgender/non-binary/two-spirit decedents"
+  )
+  
+  all_numeric <- all(sapply(cleaned_data[numeric_columns], is.numeric))
+  
+  if (all_numeric) {
+    print("Test 2 Passed: All relevant columns have been converted to numeric.")
+  } else {
+    print("Test 2 Failed: Some relevant columns are not numeric.")
+  }
+}
+
+# Run Test 2
+test_numeric_conversion(cleaned_data)
+
+
+
+LLM usage for Graphing: 
+
 You said: 
 {r}
 #| label: fig-TotalNumberofDeathByYear 
