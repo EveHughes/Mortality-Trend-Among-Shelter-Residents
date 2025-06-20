@@ -46,11 +46,11 @@ cleaned_death_data["transgender_nonbinary_twospirit"] = cleaned_death_data["tran
 # Display the cleaned dataset
 print(cleaned_death_data.head())
 
-#remove rows after September 2024
+#remove rows after & including September 2024
 cleaned_death_data = cleaned_death_data[
     ~(
         (cleaned_death_data["year"] == 2025) |
-        ((cleaned_death_data["year"] == 2024) & (cleaned_death_data["month"].isin(["Oct", "Nov", "Dec"])))
+        ((cleaned_death_data["year"] == 2024) & (cleaned_death_data["month"].isin(["Sep", "Oct", "Nov", "Dec"])))
     )
 ]
 

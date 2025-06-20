@@ -14,22 +14,18 @@ toc: true
 
 ---
 
-```{r}
+```{python}
 #| include: false
 #| warning: false
 #| message: false
 
 # load necessary package
-library(tidyverse)
-library(ggplot2)
-library(dplyr)
-library(knitr)
-library(tidyr)
-library(gridExtra)
+import pandas as pd
+import matplotlib.pyplot as plt
 
 # load data
-Death_data <- read_csv(here::here("data/analysis_data/Num_death_analysis_data.csv"))
-AvgAge_data <- read_csv(here::here("data/analysis_data/AvgAge_death_analysis_data.csv"))
+Death_data = pd.read_csv("../data/analysis_data/Num_death_analysis_data.csv")
+AvgAge_data = pd.read_csv("../data/analysis_data/AvgAge_death_analysis_data.csv")
 ```
 
 
@@ -75,25 +71,48 @@ The data used in this paper was collected by the Toronto Shelter and Support Ser
 **Transgender/Non-binary/Two-Spirit:** Total number of transgender, non-binary, and Two-Spirit shelter residents who died in the reported month/year.
 
 \newpage
-```{r}
+```{python}
 #| label: tbl-Table1
 #| tbl-cap: Variable In The Data - Detah Among Shelter Residents (2007-2024)
 #| echo: false
 
 # Remove the 'id' column
-AvgAge_data_no_id <- AvgAge_data %>%
-  select(-id)
+AvgAge_data_no_id = AvgAge_data.drop(columns=["id"])
 
-# Display the table without the 'id' column
-kable(AvgAge_data_no_id,
-  col.names = c(
+# Rename columns for display
+AvgAge_data_no_id.columns = [
     "Year", "Total Decedents",
     "Avg Age of Death (All)", "Male Decedents",
     "Avg Age of Death (Male)", "Female Decedents",
     "Avg Age of Death (Female)", "Trans/NB/2S Decedents",
     "Avg Age of Death (Trans/NB/2S)"
-  )
+]
+
+# Create the figure and axis
+fig, ax = plt.subplots(figsize=(12, len(AvgAge_data_no_id) * 0.4))  # Adjust height to fit rows
+
+# Hide axis
+ax.axis("off")
+
+# Create table
+table = ax.table(
+    cellText=AvgAge_data_no_id.values,
+    colLabels=AvgAge_data_no_id.columns,
+    loc="center",
+    cellLoc="center"
 )
+
+# Style the table
+table.auto_set_font_size(False)
+table.set_fontsize(8)
+table.scale(1, 1.5)
+
+# Optional title
+plt.title("Table: Variable In The Data – Death Among Shelter Residents (2007–2024)", fontsize=10, pad=20)
+
+plt.tight_layout()
+plt.show()
+
 ```
 
 ## Limitation of Data {#sec-lim}
@@ -109,134 +128,181 @@ Other limitations include the absence of certain data points, such as the cause 
 
 The following graph (@fig-TotalNumberofDeathByYear) shows the overall trend in the number of decedents living in shelters from 2007 to 2024. It reveals that between 2007 and 2013, the number of deaths remained quite low, under 30 death each year. However, starting in 2013, the number of deaths increased, and the mortality rate never returned to the low levels seen from 2007 to 2013. The graph also highlights two significant peaks in 2015 and 2021. The increase in deaths was more pronounced in 2021 compared to 2015. Further discussion on the reasons for these peaks can be found in discussion sections (@sec-first-dpoint and @sec-second-dpoint). Furthermore, in the appendix (@sec-app), there are graph for number of death per month for each individual year.
 
-```{r}
+```{python}
 #| label: fig-TotalNumberofDeathByYear
 #| fig-cap: Yearly Mortality rate from 2007-2024
 #| echo: false
 
-# creating a line graph
-AvgAge_data |>
-  ggplot(aes(x = year, y = total_decedents)) +
-  geom_point() +
-  geom_line() +
-  labs(title = "Total Shelter Residents Decedents from 2007 to 2024", x = "Year", y = "Total Decedents") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45)) +
-  theme(plot.title = element_text(hjust = 0.5)) +
-  scale_x_continuous(breaks = unique(AvgAge_data$year)) +
-  scale_y_continuous(breaks = seq(0, max(AvgAge_data$total_decedents), by = 20))
+import matplotlib.pyplot as plt
+
+# Sort by year to ensure correct line order
+AvgAge_data_sorted = AvgAge_data.sort_values("year")
+
+# Create the figure and axis
+plt.figure(figsize=(8, 5))
+plt.plot(AvgAge_data_sorted["year"], AvgAge_data_sorted["total_decedents"], marker="o")
+
+# Set title and labels
+plt.title("Total Shelter Residents Decedents from 2007 to 2024", ha="center")
+plt.xlabel("Year")
+plt.ylabel("Total Decedents")
+
+# Rotate x-axis labels
+plt.xticks(AvgAge_data_sorted["year"], rotation=45)
+
+# Set y-axis ticks at intervals of 20
+plt.yticks(range(0, AvgAge_data_sorted["total_decedents"].max() + 20, 20))
+
+# Apply minimal style (closest match to theme_minimal in ggplot2)
+plt.grid(True, linestyle='--', alpha=0.5)
+plt.tight_layout()
+
+# Show plot (Quarto will capture it)
+plt.show()
+
 ```
 
 \newpage
 @fig-TotalDecedentbyMonthcovid provides a close-up view of the years 2019 to 2024, covering the period of the COVID-19 pandemic and a bit of the post-pandemic phase. During this time, the number of deaths does not exhibit a clear trend as time progresses. However, in many months during these years, the number of deaths remains notably high, often fluctuating between 10 and 15 deaths per month. Detailed discussion found in @sec-second-dpoint.
-```{r}
+```{python}
 #| label: fig-TotalDecedentbyMonthcovid
-#| fig-cap: Yearly Mortality rate during COVID (2019-2023)
+#| fig-cap: Yearly Mortality Rate During COVID (2019–2023)
 #| echo: false
+#| warning: false
+#| message: false
 
-# Filter the data for years 2019 to 2022
-Death_data_filtered <- Death_data |>
-  filter(year >= 2019 & year <= 2023)
+import matplotlib.pyplot as plt
+import pandas as pd
 
-# Combine Year and Month into a single column with last two digits of the year
-Death_data_filtered$YearMonth <- paste(substr(Death_data_filtered$year, 3, 4), Death_data_filtered$month, sep = "-")
+# Filter the data for years 2019 to 2023
+Death_data_filtered = Death_data[(Death_data["year"] >= 2019) & (Death_data["year"] <= 2023)].copy()
 
-# Convert YearMonth to a factor with ordered levels
-Death_data_filtered$YearMonth <- factor(Death_data_filtered$YearMonth, levels = unique(Death_data_filtered$YearMonth))
+# Ensure month is ordered and standardized
+month_order = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+               "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+Death_data_filtered["month"] = pd.Categorical(Death_data_filtered["month"], categories=month_order, ordered=True)
 
-# Plot the graph for filtered data
-Death_data_filtered |>
-  ggplot(aes(x = YearMonth, y = total_decedents, group = 1)) +
-  geom_line(color = "black") +
-  geom_point(color = "black") +
-  scale_x_discrete(breaks = Death_data_filtered$YearMonth[seq(1, nrow(Death_data_filtered), by = 6)]) +
-  labs(
-    title = "Trends in Total Decedents by Month(2019-2023)",
-    x = "Month-Year",
-    y = "Total Decedents"
-  ) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, size = 8)) +
-  theme(plot.title = element_text(hjust = 0.5))
+# Sort by year and month
+Death_data_filtered = Death_data_filtered.sort_values(by=["year", "month"])
+
+# Combine Year and Month into a "YY-MMM" format
+Death_data_filtered["YearMonth"] = Death_data_filtered["year"].astype(str).str[-2:] + "-" + Death_data_filtered["month"].astype(str)
+
+# Plot the data
+plt.figure(figsize=(12, 5))
+plt.plot(Death_data_filtered["YearMonth"], Death_data_filtered["total_decedents"], marker="o", color="black")
+
+# Show x-axis labels every 6 months
+xtick_locs = range(0, len(Death_data_filtered), 6)
+xtick_labels = Death_data_filtered["YearMonth"].iloc[xtick_locs]
+plt.xticks(ticks=xtick_locs, labels=xtick_labels, rotation=90, fontsize=8)
+
+# Labels and title
+plt.title("Yearly Mortality Rate During COVID (2019–2023)", ha="center")
+plt.xlabel("Month-Year")
+plt.ylabel("Total Decedents")
+
+# Minimal grid styling
+plt.grid(True, linestyle="--", alpha=0.5)
+plt.tight_layout()
+
+plt.show()
+
+
 ```
 \newpage
 @fig-T illustrates the number of deaths among genders. The bar graph clearly shows that the number of male decedents is significantly greater than that of female decedents, a trend consistent across all the years presented. Additionally, the graph indicates that the mortality rate among males is more volatile over the years, particularly from 2019 to 2022. These results may be attributed to the proportion of males living in shelters; further details can be found in @sec-3-dpoint.
-```{r}
+```{python}
 #| label: fig-T
 #| fig-cap: Total Decedents Split by Gender (Female VS Male)
 #| echo: false
 #| warning: false
 #| message: false
 
-# Reshape the data for plotting
-plot_data <- AvgAge_data |>
-  select(year, Male_decedents, Female_decedents) |>
-  pivot_longer(
-    cols = c(Male_decedents, Female_decedents),
-    names_to = "Gender",
-    values_to = "Mortality"
-  )
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
 
-# Create a new variable for the last two digits of the year with leading zero
-plot_data <- plot_data |>
-  mutate(year_short = sprintf("%02d", year %% 100))
+# Reshape the data for plotting (from wide to long format)
+plot_data = AvgAge_data[["year", "Male_decedents", "Female_decedents"]].copy()
+plot_data = plot_data.melt(id_vars="year", value_vars=["Male_decedents", "Female_decedents"],
+                           var_name="Gender", value_name="Mortality")
 
-# Create the bar graph with adjusted year labels
-plot_data |>
-  ggplot(aes(x = year_short, y = Mortality, fill = Gender)) +
-  geom_bar(stat = "identity", position = position_dodge(width = 0.8), width = 0.7) +
-  labs(
-    title = "Mortality Numbers of Male Vs Female Decedents over 2007 to 2024",
-    x = "Year (2000s)",
-    y = "Number of Decedents"
-  ) +
-  scale_fill_manual(values = c("Male_decedents" = "blue", "Female_decedents" = "pink")) +
-  theme_minimal() +
-  theme(
-    legend.title = element_blank(),
-    legend.position = "bottom"
-  ) +
-  theme(plot.title = element_text(hjust = 0.5,size = 10))
+# Create a new variable for the last two digits of the year, with leading zero
+plot_data["year_short"] = plot_data["year"] % 100
+plot_data["year_short"] = plot_data["year_short"].apply(lambda x: f"{x:02d}")
+
+# Create a grouped bar chart
+years = plot_data["year_short"].unique()
+x = np.arange(len(years))  # the label locations
+
+male_values = plot_data[plot_data["Gender"] == "Male_decedents"]["Mortality"].values
+female_values = plot_data[plot_data["Gender"] == "Female_decedents"]["Mortality"].values
+
+width = 0.35  # width of the bars
+
+fig, ax = plt.subplots(figsize=(10, 5))
+ax.bar(x - width/2, male_values, width, label="Male", color="blue")
+ax.bar(x + width/2, female_values, width, label="Female", color="pink")
+
+# Labels and formatting
+ax.set_xlabel("Year (2000s)")
+ax.set_ylabel("Number of Decedents")
+ax.set_title("Mortality Numbers of Male Vs Female Decedents over 2007 to 2024", pad=15)
+ax.set_xticks(x)
+ax.set_xticklabels(years, rotation=0)
+ax.legend(title="", loc="lower center", bbox_to_anchor=(0.5, -0.2), ncol=2)
+ax.grid(True, axis='y', linestyle='--', alpha=0.5)
+
+plt.tight_layout()
+plt.show()
+
 ```
 @fig-AvgAgeofDecedentsFemaleVSMale further examines the differences in average age at death between females and males. It is important to note that there are significantly more male deaths than female deaths, which could result in a lower average age for males due to the larger sample size. Although the graph does not definitively indicate whether males generally die at an older age than females or vice versa, it does suggest that the average age at death for males appears to be considerably higher than that for females during many periods indicated in the graph. More information is available in @sec-3-dpoint.
 
-```{r}
+```{python}
 #| label: fig-AvgAgeofDecedentsFemaleVSMale
-#| fig-cap: Average Age of Death (Female VS Male) 2007-2024
+#| fig-cap: Average Age of Death (Female VS Male) 2007–2024
 #| echo: false
 #| warning: false
 #| message: false
 
-# Reshape the data for plotting average age of death
-avg_age_data <- AvgAge_data |>
-  select(year, Average_age_of_death_male_decedents, Average_age_of_death_female_decedents) %>%
-  pivot_longer(
-    cols = c(Average_age_of_death_male_decedents, Average_age_of_death_female_decedents),
-    names_to = "Gender",
-    values_to = "Average_Age"
-  ) |>
-  mutate(year_short = sprintf("%02d", year %% 100))
+import pandas as pd
+import matplotlib.pyplot as plt
 
-# Create the line graph for average age of death
-avg_age_data |>
-  ggplot(aes(x = year_short, y = Average_Age, color = Gender, group = Gender)) +
-  geom_line(size = 1) +
-  geom_point(size = 2) +
-  labs(
-    title = "Average Age of Death for Male Vs Female Decedents",
-    x = "Year (in 2000s)",
-    y = "Average Age of Death"
-  ) +
-  scale_color_manual(values = c(
-    "Average_age_of_death_male_decedents" = "blue",
-    "Average_age_of_death_female_decedents" = "pink"
-  )) +
-  theme_minimal() +
-  theme(
-    legend.title = element_blank(),
-    legend.position = "bottom"
-  ) +
-  theme(plot.title = element_text(hjust = 0.5))
+# Reshape the data from wide to long format
+avg_age_data = AvgAge_data[["year", "Average_age_of_death_male_decedents", "Average_age_of_death_female_decedents"]].copy()
+avg_age_data = avg_age_data.melt(
+    id_vars="year",
+    value_vars=["Average_age_of_death_male_decedents", "Average_age_of_death_female_decedents"],
+    var_name="Gender",
+    value_name="Average_Age"
+)
+
+# Create new column with last two digits of the year
+avg_age_data["year_short"] = avg_age_data["year"] % 100
+avg_age_data["year_short"] = avg_age_data["year_short"].apply(lambda x: f"{x:02d}")
+
+# Pivot back to format lines cleanly
+pivoted = avg_age_data.pivot(index="year_short", columns="Gender", values="Average_Age")
+
+# Plot
+plt.figure(figsize=(10, 5))
+plt.plot(pivoted.index, pivoted["Average_age_of_death_male_decedents"], marker="o", label="Male", color="blue")
+plt.plot(pivoted.index, pivoted["Average_age_of_death_female_decedents"], marker="o", label="Female", color="pink")
+
+# Titles and labels
+plt.title("Average Age of Death for Male Vs Female Decedents", ha="center")
+plt.xlabel("Year (in 2000s)")
+plt.ylabel("Average Age of Death")
+
+# Formatting
+plt.xticks(rotation=0)
+plt.legend(title="", loc="lower center", bbox_to_anchor=(0.5, -0.25), ncol=2)
+plt.grid(True, linestyle="--", alpha=0.5)
+plt.tight_layout()
+
+plt.show()
 ```
 
 \newpage
@@ -281,317 +347,201 @@ In summary, the paper does not provide statistical evidence for all the possible
 
 # Appendix {#sec-app}
 
-```{r}
+```{python}
 #| label: fig-2007-2010
-#| fig-cap: Monthly Mortality rate from 2007-2010
+#| fig-cap: Monthly Mortality Rate from 2007–2010
 #| echo: false
 #| warning: false
 #| message: false
 
-# make sure that the month is in order from Jan to Dec.
-Death_data$month <- factor(Death_data$month, levels = month.abb)
+import pandas as pd
+import matplotlib.pyplot as plt
 
-# Filter data for the years 2007 and 2008
-current_year_data_2007 <- Death_data %>% filter(year == 2007)
-current_year_data_2008 <- Death_data %>% filter(year == 2008)
-current_year_data_2009 <- Death_data %>% filter(year == 2009)
-current_year_data_2010 <- Death_data %>% filter(year == 2010)
+# Ensure month column is a categorical with correct month order
+month_order = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+               "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+Death_data["month"] = pd.Categorical(Death_data["month"], categories=month_order, ordered=True)
 
+# Filter for each year
+data_2007 = Death_data[Death_data["year"] == 2007]
+data_2008 = Death_data[Death_data["year"] == 2008]
+data_2009 = Death_data[Death_data["year"] == 2009]
+data_2010 = Death_data[Death_data["year"] == 2010]
 
-# Create the bar plots for 2007 and 2008
-plot_2007 <- ggplot(current_year_data_2007, aes(x = month, y = total_decedents)) +
-  geom_bar(stat = "identity", fill = "black") +
-  labs(
-    title = "Total Decedents by Month in 2007",
-    x = "Month",
-    y = "# Decedents"
-  ) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45)) +
-  theme(plot.title = element_text(hjust = 0.5, size = 10))
+# Set up subplot layout
+fig, axs = plt.subplots(2, 2, figsize=(12, 8))
+axs = axs.flatten()  # Flatten to 1D for easy indexing
 
-plot_2008 <- ggplot(current_year_data_2008, aes(x = month, y = total_decedents)) +
-  geom_bar(stat = "identity", fill = "black") +
-  labs(
-    title = "Total Decedents by Month in 2008",
-    x = "Month",
-    y = "# Decedents"
-  ) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45)) +
-  theme(plot.title = element_text(hjust = 0.5, size = 10))
+# Year-wise loop for consistent plotting
+for i, (data, year) in enumerate(zip([data_2007, data_2008, data_2009, data_2010], [2007, 2008, 2009, 2010])):
+    axs[i].bar(data["month"], data["total_decedents"], color="black")
+    axs[i].set_title(f"Total Decedents by Month in {year}", fontsize=10, ha="center")
+    axs[i].set_xlabel("Month")
+    axs[i].set_ylabel("# Decedents")
+    axs[i].tick_params(axis="x", rotation=45)
+    axs[i].grid(True, axis="y", linestyle="--", alpha=0.4)
 
-plot_2009 <- ggplot(current_year_data_2009, aes(x = month, y = total_decedents)) +
-  geom_bar(stat = "identity", fill = "black") +
-  labs(
-    title = "Total Decedents by Month in 2009",
-    x = "Month",
-    y = "# Decedents"
-  ) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45)) +
-  theme(plot.title = element_text(hjust = 0.5, size = 10))
-
-plot_2010 <- ggplot(current_year_data_2010, aes(x = month, y = total_decedents)) +
-  geom_bar(stat = "identity", fill = "black") +
-  labs(
-    title = "Total Decedents by Month in 2010",
-    x = "Month",
-    y = "# Decedents"
-  ) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45)) +
-  theme(plot.title = element_text(hjust = 0.5, size = 10))
-
-
-# Arrange plots side by side
-grid.arrange(plot_2007, plot_2008, plot_2009, plot_2010, ncol = 2)
+# Layout adjustment
+plt.tight_layout()
+plt.show()
 ```
 
 
 
-```{r}
+```{python}
 #| label: fig-2011-2014
-#| fig-cap: Monthly Mortality rate from 2011-2014
+#| fig-cap: Monthly Mortality Rate from 2011–2014
 #| echo: false
 #| warning: false
 #| message: false
 
-# make sure that the month is in order from Jan to Dec.
-Death_data$month <- factor(Death_data$month, levels = month.abb)
+import matplotlib.pyplot as plt
+import pandas as pd
 
-# Filter data for the years
-current_year_data_2011 <- Death_data %>% filter(year == 2011)
-current_year_data_2012 <- Death_data %>% filter(year == 2012)
-current_year_data_2013 <- Death_data %>% filter(year == 2013)
-current_year_data_2014 <- Death_data %>% filter(year == 2014)
+# Ensure months are in correct order
+month_order = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+               "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+Death_data["month"] = pd.Categorical(Death_data["month"], categories=month_order, ordered=True)
 
+# Filter data by year
+data_2011 = Death_data[Death_data["year"] == 2011]
+data_2012 = Death_data[Death_data["year"] == 2012]
+data_2013 = Death_data[Death_data["year"] == 2013]
+data_2014 = Death_data[Death_data["year"] == 2014]
 
-# Create the bar plots
-plot_2011 <- ggplot(current_year_data_2011, aes(x = month, y = total_decedents)) +
-  geom_bar(stat = "identity", fill = "black") +
-  labs(
-    title = "Total Decedents by Month in 2011",
-    x = "Month",
-    y = "# Decedents"
-  ) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45)) +
-  theme(plot.title = element_text(hjust = 0.5, size = 10))
+# Set up 2x2 subplot layout
+fig, axs = plt.subplots(2, 2, figsize=(12, 8))
+axs = axs.flatten()
 
-plot_2012 <- ggplot(current_year_data_2012, aes(x = month, y = total_decedents)) +
-  geom_bar(stat = "identity", fill = "black") +
-  labs(
-    title = "Total Decedents by Month in 2012",
-    x = "Month",
-    y = "# Decedents"
-  ) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45)) +
-  theme(plot.title = element_text(hjust = 0.5, size = 10))
+# Plot each year
+for i, (data, year) in enumerate(zip([data_2011, data_2012, data_2013, data_2014], [2011, 2012, 2013, 2014])):
+    axs[i].bar(data["month"], data["total_decedents"], color="black")
+    axs[i].set_title(f"Total Decedents by Month in {year}", fontsize=10, ha="center")
+    axs[i].set_xlabel("Month")
+    axs[i].set_ylabel("# Decedents")
+    axs[i].tick_params(axis="x", rotation=45)
+    axs[i].grid(True, axis="y", linestyle="--", alpha=0.4)
 
-plot_2013 <- ggplot(current_year_data_2013, aes(x = month, y = total_decedents)) +
-  geom_bar(stat = "identity", fill = "black") +
-  labs(
-    title = "Total Decedents by Month in 2013",
-    x = "Month",
-    y = "# Decedents"
-  ) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45)) +
-  theme(plot.title = element_text(hjust = 0.5, size = 10))
-
-plot_2014 <- ggplot(current_year_data_2014, aes(x = month, y = total_decedents)) +
-  geom_bar(stat = "identity", fill = "black") +
-  labs(
-    title = "Total Decedents by Month in 2014",
-    x = "Month",
-    y = "# Decedents"
-  ) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45)) +
-  theme(plot.title = element_text(hjust = 0.5, size = 10))
-
-
-# Arrange plots side by side
-grid.arrange(plot_2011, plot_2012, plot_2013, plot_2014, ncol = 2)
+# Adjust layout for better spacing
+plt.tight_layout()
+plt.show()
 ```
 
-```{r}
+```{python}
 #| label: fig-2015-2018
-#| fig-cap: Monthly Mortality rate from 2015-2018
+#| fig-cap: Monthly Mortality Rate from 2015–2018
 #| echo: false
 #| warning: false
 #| message: false
 
-# make sure that the month is in order from Jan to Dec.
-Death_data$month <- factor(Death_data$month, levels = month.abb)
+import matplotlib.pyplot as plt
+import pandas as pd
 
-# Filter data for the years
+# Ensure months are in correct order
+month_order = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+               "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+Death_data["month"] = pd.Categorical(Death_data["month"], categories=month_order, ordered=True)
 
-current_year_data_2015 <- Death_data %>% filter(year == 2015)
-current_year_data_2016 <- Death_data %>% filter(year == 2016)
-current_year_data_2017 <- Death_data %>% filter(year == 2017)
-current_year_data_2018 <- Death_data %>% filter(year == 2018)
+# Filter data by year
+data_2015 = Death_data[Death_data["year"] == 2015]
+data_2016 = Death_data[Death_data["year"] == 2016]
+data_2017 = Death_data[Death_data["year"] == 2017]
+data_2018 = Death_data[Death_data["year"] == 2018]
 
+# Set up 2x2 subplot layout
+fig, axs = plt.subplots(2, 2, figsize=(12, 8))
+axs = axs.flatten()
 
-# Create the bar plots
+# Plot each year's data
+for i, (data, year) in enumerate(zip([data_2015, data_2016, data_2017, data_2018], [2015, 2016, 2017, 2018])):
+    axs[i].bar(data["month"], data["total_decedents"], color="black")
+    axs[i].set_title(f"Total Decedents by Month in {year}", fontsize=10, ha="center")
+    axs[i].set_xlabel("Month")
+    axs[i].set_ylabel("# Decedents")
+    axs[i].tick_params(axis="x", rotation=45)
+    axs[i].grid(True, axis="y", linestyle="--", alpha=0.4)
 
-plot_2015 <- ggplot(current_year_data_2015, aes(x = month, y = total_decedents)) +
-  geom_bar(stat = "identity", fill = "black") +
-  labs(
-    title = "Total Decedents by Month in 2015",
-    x = "Month",
-    y = "# Decedents"
-  ) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45)) +
-  theme(plot.title = element_text(hjust = 0.5, size = 10))
+# Adjust layout
+plt.tight_layout()
+plt.show()
 
-plot_2016 <- ggplot(current_year_data_2016, aes(x = month, y = total_decedents)) +
-  geom_bar(stat = "identity", fill = "black") +
-  labs(
-    title = "Total Decedents by Month in 2016",
-    x = "Month",
-    y = "# Decedents"
-  ) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45)) +
-  theme(plot.title = element_text(hjust = 0.5, size = 10))
-
-plot_2017 <- ggplot(current_year_data_2017, aes(x = month, y = total_decedents)) +
-  geom_bar(stat = "identity", fill = "black") +
-  labs(
-    title = "Total Decedents by Month in 2017",
-    x = "Month",
-    y = "# Decedents"
-  ) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45)) +
-  theme(plot.title = element_text(hjust = 0.5, size = 10))
-
-plot_2018 <- ggplot(current_year_data_2018, aes(x = month, y = total_decedents)) +
-  geom_bar(stat = "identity", fill = "black") +
-  labs(
-    title = "Total Decedents by Month in 2018",
-    x = "Month",
-    y = "# Decedents"
-  ) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45)) +
-  theme(plot.title = element_text(hjust = 0.5, size = 10))
-
-# Arrange plots side by side
-grid.arrange(plot_2015, plot_2016, plot_2017, plot_2018, ncol = 2)
 ```
 
-```{r}
+```{python}
 #| label: fig-2019-2022
-#| fig-cap: Monthly Mortality rate from 2019-2022
+#| fig-cap: Monthly Mortality Rate from 2019–2022
 #| echo: false
 #| warning: false
 #| message: false
 
-# make sure that the month is in order from Jan to Dec.
-Death_data$month <- factor(Death_data$month, levels = month.abb)
+import matplotlib.pyplot as plt
+import pandas as pd
 
-# Filter data for the years
+# Ensure months are in correct order
+month_order = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+               "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+Death_data["month"] = pd.Categorical(Death_data["month"], categories=month_order, ordered=True)
 
-current_year_data_2019 <- Death_data %>% filter(year == 2019)
-current_year_data_2020 <- Death_data %>% filter(year == 2020)
-current_year_data_2021 <- Death_data %>% filter(year == 2021)
-current_year_data_2022 <- Death_data %>% filter(year == 2022)
+# Filter data by year
+data_2019 = Death_data[Death_data["year"] == 2019]
+data_2020 = Death_data[Death_data["year"] == 2020]
+data_2021 = Death_data[Death_data["year"] == 2021]
+data_2022 = Death_data[Death_data["year"] == 2022]
 
+# Set up 2x2 subplot layout
+fig, axs = plt.subplots(2, 2, figsize=(12, 8))
+axs = axs.flatten()
 
-# Create the bar plots
-plot_2019 <- ggplot(current_year_data_2019, aes(x = month, y = total_decedents)) +
-  geom_bar(stat = "identity", fill = "black") +
-  labs(
-    title = "Total Decedents by Month in 2019",
-    x = "Month",
-    y = "# Decedents"
-  ) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45)) +
-  theme(plot.title = element_text(hjust = 0.5, size = 10))
+# Plot each year
+for i, (data, year) in enumerate(zip([data_2019, data_2020, data_2021, data_2022], [2019, 2020, 2021, 2022])):
+    axs[i].bar(data["month"], data["total_decedents"], color="black")
+    axs[i].set_title(f"Total Decedents by Month in {year}", fontsize=10, ha="center")
+    axs[i].set_xlabel("Month")
+    axs[i].set_ylabel("# Decedents")
+    axs[i].tick_params(axis="x", rotation=45)
+    axs[i].grid(True, axis="y", linestyle="--", alpha=0.4)
 
-plot_2020 <- ggplot(current_year_data_2020, aes(x = month, y = total_decedents)) +
-  geom_bar(stat = "identity", fill = "black") +
-  labs(
-    title = "Total Decedents by Month in 2020",
-    x = "Month",
-    y = "# Decedents"
-  ) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45)) +
-  theme(plot.title = element_text(hjust = 0.5, size = 10))
+# Adjust layout
+plt.tight_layout()
+plt.show()
 
-plot_2021 <- ggplot(current_year_data_2021, aes(x = month, y = total_decedents)) +
-  geom_bar(stat = "identity", fill = "black") +
-  labs(
-    title = "Total Decedents by Month in 2021",
-    x = "Month",
-    y = "# Decedents"
-  ) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45)) +
-  theme(plot.title = element_text(hjust = 0.5, size = 10))
-
-plot_2022 <- ggplot(current_year_data_2022, aes(x = month, y = total_decedents)) +
-  geom_bar(stat = "identity", fill = "black") +
-  labs(
-    title = "Total Decedents by Month in 2022",
-    x = "Month",
-    y = "# Decedents"
-  ) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45)) +
-  theme(plot.title = element_text(hjust = 0.5, size = 10))
-
-
-# Arrange plots side by side
-grid.arrange(plot_2019, plot_2020, plot_2021, plot_2022, ncol = 2)
 ```
 
-```{r}
+```{python}
 #| label: fig-2023-2024
-#| fig-cap: Monthly Mortality rate from 2023-2024
+#| fig-cap: Monthly Mortality Rate from 2023–2024
 #| echo: false
 #| warning: false
 #| message: false
 
-# make sure that the month is in order from Jan to Dec.
-Death_data$month <- factor(Death_data$month, levels = month.abb)
+import matplotlib.pyplot as plt
+import pandas as pd
 
-# Filter data for the years
-current_year_data_2023 <- Death_data %>% filter(year == 2023)
-current_year_data_2024 <- Death_data %>% filter(year == 2024)
+# Ensure months are ordered from Jan to Dec
+month_order = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+               "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+Death_data["month"] = pd.Categorical(Death_data["month"], categories=month_order, ordered=True)
 
-# Create the bar plots
-plot_2023 <- ggplot(current_year_data_2023, aes(x = month, y = total_decedents)) +
-  geom_bar(stat = "identity", fill = "black") +
-  labs(
-    title = "Total Decedents by Month in 2023",
-    x = "Month",
-    y = "# Decedents"
-  ) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45)) +
-  theme(plot.title = element_text(hjust = 0.5, size = 10))
+# Filter data for 2023 and 2024
+data_2023 = Death_data[Death_data["year"] == 2023]
+data_2024 = Death_data[Death_data["year"] == 2024]
 
-plot_2024 <- ggplot(current_year_data_2024, aes(x = month, y = total_decedents)) +
-  geom_bar(stat = "identity", fill = "black") +
-  labs(
-    title = "Total Decedents by Month in 2024",
-    x = "Month",
-    y = "# Decedents"
-  ) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45)) +
-  theme(plot.title = element_text(hjust = 0.5, size = 10))
+# Set up 1x2 subplot layout
+fig, axs = plt.subplots(1, 2, figsize=(12, 4))
 
-# Arrange plots side by side
-grid.arrange(plot_2023, plot_2024, ncol = 2)
+# Plot each year
+for ax, data, year in zip(axs, [data_2023, data_2024], [2023, 2024]):
+    ax.bar(data["month"], data["total_decedents"], color="black")
+    ax.set_title(f"Total Decedents by Month in {year}", fontsize=10, ha="center")
+    ax.set_xlabel("Month")
+    ax.set_ylabel("# Decedents")
+    ax.tick_params(axis="x", rotation=45)
+    ax.grid(True, axis="y", linestyle="--", alpha=0.4)
+
+# Adjust layout
+plt.tight_layout()
+plt.show()
+
 ```
 
 
