@@ -1,8 +1,8 @@
 #### Preamble ####
 # Purpose: Downloads and saves the data from Open Data Toronto
-# Author: Mandy He
+# Author: Vivian Guo
 # Date: 23 September 2024
-# Contact: mandyxy.he@mail.utoronto.ca
+# Contact: vivian.guo@mail.utoronto.ca
 # License: N/A
 # Pre-requisites: N/A
 

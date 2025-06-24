@@ -1,8 +1,8 @@
 #### Preamble ####
 # Purpose: Tests for "n/a" Replacement and Negative Numbers.
-# Author: Mandy He
+# Author: Vivian Guo
 # Date: 23 September 2024
-# Contact: mandyxy.he@mail.utoronto.ca
+# Contact: vivian.guo@mail.utoronto.ca
 # License: N/A
 # Pre-requisites: N/A
 

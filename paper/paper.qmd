@@ -1,13 +1,15 @@
 ---
-title: "Mortality Trend Among Shelter Residents: "
-subtitle: "Closely Tied To Virus Outbreaks"
+title: "Analyzing Mortality Among Shelter Residents"
+subtitle: "Evidence of Strong Links to Viral Outbreaks"
 author: 
-  - Mandy He
-thanks: "Code and data are available at: https://github.com/MandyHe7/Mortality-Trend-Among-Shelter-Residents"
+  - Vivian Guo
+thanks: "Code and data are available at: https://github.com/EveHughes/Mortality-Trend-Among-Shelter-Residents"
 date: Septmeber 27 2024
 date-format: long
 abstract: "Homelessness remain pressing issues in today’s society, particularly evident in Toronto, these individuals face severe health issues, leading to increased risk of mortality. This paper analyzes trends in mortality rates among shelter residents in the City of Toronto (2007 to 2024), highlighting patterns over time and exploring the factors contributing to these rates. This paper found trend in mortality rate of this minority group reflects the overall macro-environment health conditions. Thus, examining these patterns can help improve provisions and reduce the number of deaths among both this vulnerable population and society at large."
-format: pdf
+format:
+  pdf:
+    pdf-engine: lualatex
 number-sections: true
 bibliography: references.bib 
 toc: true 
@@ -48,7 +50,7 @@ The remainder of this paper is structured as follows. @sec-data will discuss the
 
 ## Raw Data {#sec-first-point}
 
-The data used in this paper is access from Open Data Toronto and the particular data set used was the Deaths of Shelter Residents (@toronto_deaths_shelter_residents). To analysis the data and creating graphs using the data, following package that was build in the (R program @citeR) was used: tidyverse (@tidyverse), dplyr (@dplyr), tidyr (@tidyr), gridExtra (@gridExtra), knitr (@knitr), and ggplot2 (@ggplot2). LLM (@openai2023chatgpt) was also use in term of helping with coding in R to graph data, simulating data, cleaning data, and revising writing. 
+The data used in this paper is access from Open Data Toronto and the particular data set used was the Deaths of Shelter Residents (@toronto_deaths_shelter_residents). To analysis the data and creating graphs using the data, following package that was build in the (Python program @python) was used: pandas (@pandas), numpy (@numpy), and matplotlib (@matplotlib).
 
 The data used in this paper was collected by the Toronto Shelter and Support Services Division since 2007. Shelters are required to notify the City of Toronto within 24 hours of a death and submit a written report within 30 days. Accordingly, the data is updated monthly on the Open Data Toronto website. The raw data set includes 10 variables and 18 observations, covering the period from 2007 to 2024, as shown in @tbl-Table1. The key variables used in this paper include: year, total decedents, average age at death for all decedents, male decedents, average age at death for male decedents, female decedents, and average age at death for female decedents. Additionally, the monthly death counts from 2007 to 2024 will be used for graphing, comprising 212 observations.
 

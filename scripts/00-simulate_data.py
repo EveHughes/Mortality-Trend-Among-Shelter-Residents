@@ -1,8 +1,8 @@
 #### Preamble ####
 # Purpose: Simulates a sample data of Deaths Among Shelter Residents from 2007 to 2024
-# Author: Mandy He
+# Author: Vivian Guo
 # Date: 23 September 2024
-# Contact: mandyxy.he@mail.utoronto.ca
+# Contact: vivian.guo@mail.utoronto.ca
 # License: N/A
 # Pre-requisites: N/A
 

@@ -1,14 +1,13 @@
 #### Preamble ####
 # Purpose: Cleans the raw data so variable is easier to call
-# Author: Mandy He
+# Author: Vivian Guo
 # Date: 23 September 2024
-# Contact: mandyxy.he@mail.utoronto.ca
+# Contact: vivian.guo@mail.utoronto.ca
 # License: N/A
 # Pre-requisites: N/A
 
 #### Workspace setup ####
 import pandas as pd
-from datetime import datetime
 
 #### Clean data ####
 
